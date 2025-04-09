@@ -1,8 +1,8 @@
 package repository_interfaces
 
 import (
+	"PikaClean/internal/models"
 	"github.com/google/uuid"
-	"lab3/internal/models"
 )
 
 type IOrderRepository interface {

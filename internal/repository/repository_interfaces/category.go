@@ -1,6 +1,6 @@
 package repository_interfaces
 
-import "lab3/internal/models"
+import "PikaClean/internal/models"
 
 type ICategoryRepository interface {
 	GetAll() ([]models.Category, error)
