@@ -1,0 +1,16 @@
+{
+    "postgres": {
+      "host": "127.0.0.1",
+      "user": "root",
+      "password": "root",
+      "port": "8080",
+      "dbname": "ppo"
+    },
+
+    "mode" : "cmd",
+    "dbtype": "postgres",
+    "loglevel": "info",
+    "logfile" : "info.log",
+    "port": ":8080",
+    "address": "127.0.0.1"
+}
