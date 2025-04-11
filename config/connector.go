@@ -7,7 +7,7 @@ import (
 
 	"github.com/charmbracelet/log"
 	_ "github.com/jackc/pgx/v4/stdlib"
-	"golang.org/x/net/context"
+	_ "golang.org/x/net/context"
 )
 
 type DbConnectionFlags struct {

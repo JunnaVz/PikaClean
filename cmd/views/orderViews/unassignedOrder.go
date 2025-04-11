@@ -2,9 +2,9 @@ package orderViews
 
 import (
 	"fmt"
-	"lab3/cmd/modelTables"
-	"lab3/internal/models"
-	"lab3/internal/registry"
+	"teamdev/cmd/modelTables"
+	"teamdev/internal/models"
+	"teamdev/internal/registry"
 )
 
 func GetUnassignedOrder(services registry.Services, order *models.Order) error {

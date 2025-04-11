@@ -1,8 +1,8 @@
 package orderViews
 
 import (
-	"lab3/internal/models"
-	"lab3/internal/registry"
+	"teamdev/internal/models"
+	"teamdev/internal/registry"
 )
 
 func CancelOrder(services registry.Services, order *models.Order) error {

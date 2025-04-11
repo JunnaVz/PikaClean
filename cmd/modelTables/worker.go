@@ -2,9 +2,9 @@ package modelTables
 
 import (
 	"fmt"
-	"lab3/internal/models"
-	"lab3/internal/registry"
 	"os"
+	"teamdev/internal/models"
+	"teamdev/internal/registry"
 	"text/tabwriter"
 )
 

@@ -3,9 +3,9 @@ package postgres
 import (
 	"database/sql"
 	"errors"
-	"lab3/internal/models"
-	"lab3/internal/repository/repository_errors"
-	"lab3/internal/repository/repository_interfaces"
+	"teamdev/internal/models"
+	"teamdev/internal/repository/repository_errors"
+	"teamdev/internal/repository/repository_interfaces"
 
 	"github.com/google/uuid"
 	"github.com/jmoiron/sqlx"

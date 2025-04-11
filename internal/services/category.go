@@ -1,8 +1,8 @@
 package interfaces
 
 import (
-	"lab3/internal/models"
-	"lab3/internal/repository/repository_interfaces"
+	"teamdev/internal/models"
+	"teamdev/internal/repository/repository_interfaces"
 
 	"github.com/charmbracelet/log"
 )

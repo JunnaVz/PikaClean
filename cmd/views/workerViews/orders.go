@@ -2,10 +2,10 @@ package workerViews
 
 import (
 	"fmt"
-	"lab3/cmd/modelTables"
-	"lab3/cmd/views/orderViews"
-	"lab3/internal/models"
-	"lab3/internal/registry"
+	"teamdev/cmd/modelTables"
+	"teamdev/cmd/views/orderViews"
+	"teamdev/internal/models"
+	"teamdev/internal/registry"
 )
 
 func getOrderNumber() int {

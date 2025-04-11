@@ -2,9 +2,9 @@ package taskViews
 
 import (
 	"fmt"
-	"lab3/cmd/modelTables"
-	"lab3/internal/models"
-	"lab3/internal/registry"
+	"teamdev/cmd/modelTables"
+	"teamdev/internal/models"
+	"teamdev/internal/registry"
 )
 
 func AllTasks(services registry.Services) error {

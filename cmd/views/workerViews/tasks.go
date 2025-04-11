@@ -2,11 +2,11 @@ package workerViews
 
 import (
 	"fmt"
-	"lab3/cmd/menu"
-	"lab3/cmd/modelTables"
-	"lab3/cmd/views/taskViews"
-	"lab3/internal/models"
-	"lab3/internal/registry"
+	"teamdev/cmd/menu"
+	"teamdev/cmd/modelTables"
+	"teamdev/cmd/views/taskViews"
+	"teamdev/internal/models"
+	"teamdev/internal/registry"
 )
 
 func pickTaskForEditing(services registry.Services, tasks []models.Task) error {

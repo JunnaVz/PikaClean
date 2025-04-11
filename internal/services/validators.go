@@ -2,9 +2,9 @@ package interfaces
 
 import (
 	"github.com/google/uuid"
-	"lab3/internal/models"
 	"net/mail"
 	"regexp"
+	"teamdev/internal/models"
 	"time"
 )
 

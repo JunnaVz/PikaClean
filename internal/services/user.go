@@ -5,11 +5,11 @@ import (
 	"fmt"
 	"github.com/charmbracelet/log"
 	"github.com/google/uuid"
-	"lab3/internal/models"
-	"lab3/internal/repository/repository_errors"
-	"lab3/internal/repository/repository_interfaces"
-	"lab3/internal/services/service_interfaces"
-	"lab3/password_hash"
+	"teamdev/internal/models"
+	"teamdev/internal/repository/repository_errors"
+	"teamdev/internal/repository/repository_interfaces"
+	"teamdev/internal/services/service_interfaces"
+	"teamdev/password_hash"
 )
 
 type UserService struct {
