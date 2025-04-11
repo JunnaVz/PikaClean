@@ -2,7 +2,7 @@ package repository_interfaces
 
 import (
 	"github.com/google/uuid"
-	"lab3/internal/models"
+	"teamdev/internal/models"
 )
 
 type IUserRepository interface {

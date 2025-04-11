@@ -60,6 +60,25 @@ create table order_contains_tasks
     quantity int2             default 1
 );
 
+drop table if exists categories cascade;
+CREATE TABLE IF NOT EXISTS categories
+(
+    id   SERIAL UNIQUE,
+    name VARCHAR
+);
+SELECT setval(pg_get_serial_sequence('categories', 'id'), COALESCE(MAX(id), 1) + 1, false)
+FROM categories;
+
+INSERT INTO categories (id, name)
+VALUES (1, 'Мытье окон'),
+       (2, 'Генеральная уборка'),
+       (3, 'Ежедневная уборка офисов'),
+       (4, 'Послестроительная уборка'),
+       (5, 'Химчистка ковров и мебели'),
+       (6, 'Поддерживающая уборка'),
+       (7, 'Глубинная Эко Чистка'),
+       (8, 'Уход за твердыми полами');
+
 --2. insert into
 INSERT INTO tasks (id, name, price_per_single, category)
 VALUES
@@ -193,22 +212,37 @@ VALUES
 
 --3. read files with data
 COPY public.workers (ID, NAME, SURNAME, EMAIL, PHONE_NUMBER, ADDRESS, PASSWORD, ROLE)
-    FROM 'D:\JOVANA\UNI\sem6\PPO\backend-space\db\sql\workers_data.csv' DELIMITER ';' CSV HEADER NULL 'NULL';
+    FROM 'D:\UNI\sem8\PikaClean\db\sql\workers_data.csv' DELIMITER ';' CSV HEADER NULL 'NULL';
 
 COPY public.users (ID, NAME, SURNAME, EMAIL, PHONE_NUMBER, ADDRESS, PASSWORD)
-    FROM 'D:\JOVANA\UNI\sem6\PPO\backend-space\db\sql\users_data.csv' DELIMITER ';' CSV HEADER NULL 'NULL';
+    FROM 'D:\UNI\sem8\PikaClean\db\sql\users_data.csv' DELIMITER ';' CSV HEADER NULL 'NULL';
 
 COPY public.orders (ID, WORKER_ID, USER_ID, STATUS, DEADLINE, ADDRESS, CREATION_DATE, RATE)
-    FROM 'D:\JOVANA\UNI\sem6\PPO\backend-space\db\sql\orders_data.csv' DELIMITER ';' CSV HEADER NULL 'NULL';
+    FROM 'D:\UNI\sem8\PikaClean\db\sql\orders_data.csv' DELIMITER ';' CSV HEADER NULL 'NULL';
 
 COPY public.order_contains_tasks (ID, ORDER_ID, TASK_ID, QUANTITY)
-    FROM 'D:\JOVANA\UNI\sem6\PPO\backend-space\db\sql\order_contains_data.csv' DELIMITER ';' CSV HEADER NULL 'NULL';
+    FROM 'D:\UNI\sem8\PikaClean\db\sql\order_contains_data.csv' DELIMITER ';' CSV HEADER NULL 'NULL';
+
+-- 3.1 server read files
+COPY public.workers (ID, NAME, SURNAME, EMAIL, PHONE_NUMBER, ADDRESS, PASSWORD, ROLE)
+    FROM 'D:\UNI\sem8\PikaClean\db\sql\workers_data.csv' DELIMITER ';' CSV HEADER NULL 'NULL';
+
+COPY public.users (ID, NAME, SURNAME, EMAIL, PHONE_NUMBER, ADDRESS, PASSWORD)
+    FROM 'D:\UNI\sem8\PikaClean\db\sql\users_data.csv' DELIMITER ';' CSV HEADER NULL 'NULL';
+
+COPY public.orders (ID, WORKER_ID, USER_ID, STATUS, DEADLINE, ADDRESS, CREATION_DATE, RATE)
+    FROM 'D:\UNI\sem8\PikaClean\db\sql\orders_data.csv' DELIMITER ';' CSV HEADER NULL 'NULL';
+
+COPY public.order_contains_tasks (ID, ORDER_ID, TASK_ID, QUANTITY)
+    FROM 'D:\UNI\sem8\PikaClean\db\sql\order_contains_data.csv' DELIMITER ';' CSV HEADER NULL 'NULL';
+
+
 
 --4. delete
 DELETE FROM workers WHERE role = 1;
 
 UPDATE workers
-SET password = '$2b$12$TbfG11CRR9OSEsNX.Awije1.DmStMp.Erq1nJ/xIYwu.ilYjSbwOm';
+SET password = '$2y$10$K8G5sGvJu2SMsEGH0xKYt.kb8Faxq6ZmTAhAmu4tefhlsmF/i4.NO';
 
 UPDATE users
-SET password = '$2b$12$TbfG11CRR9OSEsNX.Awije1.DmStMp.Erq1nJ/xIYwu.ilYjSbwOm';
+SET password = '$2y$10$K8G5sGvJu2SMsEGH0xKYt.kb8Faxq6ZmTAhAmu4tefhlsmF/i4.NO';

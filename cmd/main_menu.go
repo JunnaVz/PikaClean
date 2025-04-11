@@ -2,11 +2,11 @@ package cmd
 
 import (
 	"fmt"
-	"lab3/cmd/menu"
-	"lab3/cmd/views/taskViews"
-	"lab3/cmd/views/userViews"
-	"lab3/cmd/views/workerViews"
-	"lab3/internal/registry"
+	"teamdev/cmd/menu"
+	"teamdev/cmd/views/taskViews"
+	"teamdev/cmd/views/userViews"
+	"teamdev/cmd/views/workerViews"
+	"teamdev/internal/registry"
 )
 
 func RunMenu(a *registry.Services) error {

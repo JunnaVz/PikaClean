@@ -2,10 +2,10 @@ package userViews
 
 import (
 	"fmt"
-	"lab3/cmd/cmdUtils"
-	"lab3/internal/models"
-	"lab3/internal/registry"
 	"strings"
+	"teamdev/cmd/cmdUtils"
+	"teamdev/internal/models"
+	"teamdev/internal/registry"
 )
 
 func requestForChange(fieldName string, fieldValue string, word bool) string {

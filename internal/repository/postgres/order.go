@@ -4,10 +4,10 @@ import (
 	"database/sql"
 	"errors"
 	"fmt"
-	"lab3/internal/models"
-	"lab3/internal/repository/repository_errors"
-	"lab3/internal/repository/repository_interfaces"
 	"strings"
+	"teamdev/internal/models"
+	"teamdev/internal/repository/repository_errors"
+	"teamdev/internal/repository/repository_interfaces"
 	"time"
 
 	"github.com/google/uuid"

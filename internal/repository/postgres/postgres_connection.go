@@ -2,9 +2,9 @@ package postgres
 
 import (
 	"database/sql"
-	"lab3/config"
-	"lab3/internal/repository/repository_errors"
-	"lab3/internal/repository/repository_interfaces"
+	"teamdev/config"
+	"teamdev/internal/repository/repository_errors"
+	"teamdev/internal/repository/repository_interfaces"
 
 	"github.com/charmbracelet/log"
 	"github.com/jmoiron/sqlx"

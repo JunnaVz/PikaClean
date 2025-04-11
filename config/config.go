@@ -1,8 +1,6 @@
 package config
 
-import (
-	"github.com/spf13/viper"
-)
+import "os"
 
 type Config struct {
 	DBFlags  DbConnectionFlags `mapstructure:"postgres"`
@@ -14,21 +12,19 @@ type Config struct {
 	DBType   string            `mapstructure:"dbtype"`
 }
 
-func (c *Config) ParseConfig(configFileName, pathToConfig string) error {
-	v := viper.New()
-	v.SetConfigName(configFileName)
-	v.SetConfigType("json")
-	v.AddConfigPath(pathToConfig)
-
-	err := v.ReadInConfig()
-	if err != nil {
-		return err
-	}
-
-	err = v.Unmarshal(c) //  в  json
-	if err != nil {
-		return err
-	}
+func (c *Config) ParseConfig() error {
+	// Set database connection parameters from environment variables
+	c.DBFlags.Host = os.Getenv("POSTGRES_HOST")
+	c.DBFlags.User = os.Getenv("POSTGRES_USER")
+	c.DBFlags.Password = os.Getenv("POSTGRES_PASSWORD")
+	c.DBFlags.Port = os.Getenv("POSTGRES_PORT")
+	c.DBFlags.DBName = os.Getenv("POSTGRES_DATABASE")
+	c.Address = os.Getenv("ADDRESS")
+	c.Port = os.Getenv("PORT")
+	c.LogLevel = os.Getenv("LOGLEVEL")
+	c.LogFile = os.Getenv("LOGFILE")
+	c.Mode = os.Getenv("MODE")
+	c.DBType = os.Getenv("DBTYPE")
 
 	return nil
 }

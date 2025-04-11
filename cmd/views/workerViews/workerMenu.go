@@ -2,9 +2,9 @@ package workerViews
 
 import (
 	"fmt"
-	"lab3/cmd/menu"
-	"lab3/internal/models"
-	"lab3/internal/registry"
+	"teamdev/cmd/menu"
+	"teamdev/internal/models"
+	"teamdev/internal/registry"
 )
 
 func WorkerLoginMenu(services registry.Services) error {

@@ -2,8 +2,8 @@ package workerViews
 
 import (
 	"fmt"
-	"lab3/internal/models"
-	"lab3/internal/registry"
+	"teamdev/internal/models"
+	"teamdev/internal/registry"
 )
 
 func Get(service registry.Services, worker *models.Worker) error {

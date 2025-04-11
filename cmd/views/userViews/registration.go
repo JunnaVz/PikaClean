@@ -2,10 +2,10 @@ package userViews
 
 import (
 	"fmt"
-	utils "lab3/cmd/cmdUtils"
-	"lab3/cmd/views/stringConst"
-	"lab3/internal/models"
-	"lab3/internal/registry"
+	utils "teamdev/cmd/cmdUtils"
+	"teamdev/cmd/views/stringConst"
+	"teamdev/internal/models"
+	"teamdev/internal/registry"
 )
 
 func registration(services registry.Services) (*models.User, error) {

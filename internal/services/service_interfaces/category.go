@@ -1,6 +1,6 @@
 package service_interfaces
 
-import "lab3/internal/models"
+import "teamdev/internal/models"
 
 type ICategoryService interface {
 	GetAll() ([]models.Category, error)

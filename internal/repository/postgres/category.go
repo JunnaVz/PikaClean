@@ -1,7 +1,7 @@
 package postgres
 
 import (
-	"lab3/internal/models"
+	"teamdev/internal/models"
 
 	"github.com/jmoiron/sqlx"
 )

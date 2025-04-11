@@ -2,8 +2,8 @@ package orderViews
 
 import (
 	"fmt"
-	"lab3/internal/models"
-	"lab3/internal/registry"
+	"teamdev/internal/models"
+	"teamdev/internal/registry"
 )
 
 func OrderMenuChangeStatus(services registry.Services, order *models.Order) error {

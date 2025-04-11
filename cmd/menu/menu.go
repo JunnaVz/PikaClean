@@ -2,7 +2,7 @@ package menu
 
 import (
 	"fmt"
-	"lab3/cmd/cmdUtils"
+	"teamdev/cmd/cmdUtils"
 )
 
 type Menu struct {
