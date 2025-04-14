@@ -2,8 +2,8 @@ package test_repositories
 
 import (
 	"fmt"
-	"lab3/internal/models"
-	"lab3/internal/repository/mongodb"
+	"teamdev/internal/models"
+	"teamdev/internal/repository/mongodb"
 	"testing"
 
 	"github.com/google/uuid"
