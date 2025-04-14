@@ -1,8 +1,8 @@
 package test_repositories
 
 import (
-	"lab3/internal/models"
-	"lab3/internal/repository/mongodb"
+	"teamdev/internal/models"
+	"teamdev/internal/repository/mongodb"
 	"testing"
 	"time"
 

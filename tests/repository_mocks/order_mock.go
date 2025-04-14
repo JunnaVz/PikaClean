@@ -5,7 +5,7 @@
 package mock_repository_interfaces
 
 import (
-	models "lab3/internal/models"
+	models "teamdev/internal/models"
 	reflect "reflect"
 
 	gomock "github.com/golang/mock/gomock"
