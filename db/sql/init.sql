@@ -42,7 +42,7 @@ create table orders
 );
 
 
--- drop table if exists tasks cascade;
+drop table if exists tasks cascade;
 create table tasks
 (
     id               uuid primary key default uuid_generate_v4(),

@@ -3,8 +3,8 @@ package test_repositories
 import (
 	"context"
 	"fmt"
-	"lab3/internal/models"
-	"lab3/internal/repository/postgres"
+	"teamdev/internal/models"
+	"teamdev/internal/repository/postgres"
 	"testing"
 
 	"github.com/google/uuid"

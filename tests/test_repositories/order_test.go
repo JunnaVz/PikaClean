@@ -2,8 +2,8 @@ package test_repositories
 
 import (
 	"context"
-	"lab3/internal/models"
-	"lab3/internal/repository/postgres"
+	"teamdev/internal/models"
+	"teamdev/internal/repository/postgres"
 	"testing"
 	"time"
 
