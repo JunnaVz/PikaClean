@@ -28,5 +28,15 @@ jobs:
     - name: Build cmd
       run: go build -o cmd
 
-    - name: Run tests
-      run: go test -v ./tests/...
+    - name: Run tests hasher
+      run: go test -v ./tests/hasher_mocks
+
+    - name: Run tests repo
+      run: go test -v ./tests/test_repositories
+
+    - name: Run tests repo_mocks
+      run: go test -v ./tests/repository_mocks
+    
+    - name: Run tests services
+      run: go test -v ./tests/test_services
+    
