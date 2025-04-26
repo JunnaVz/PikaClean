@@ -34,9 +34,7 @@ jobs:
         with:
           name: binaries
           path: |
-            service
-            repository
-            cmd
+            teamdev.exe
 
   test:
     name: Test
@@ -73,8 +71,6 @@ jobs:
         with:
           name: Release ${{ github.sha }}
           files: |
-            service
-            repository
-            cmd
+            teamdev.exe
           tag_name: v0.1.${{ github.run_number }}
           generate_release_notes: true
