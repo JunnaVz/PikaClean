@@ -12,6 +12,7 @@
 # Test binary, built with `go test -c`
 *.test
 
+
 # Output of the go coverage tool, specifically when used with LiteIDE
 *.out
 
@@ -135,3 +136,7 @@ fabric.properties
 .idea/**/azureSettings.xml
 
 # End of https://www.toptal.com/developers/gitignore/api/goland,go
+
+.env
+docker-compose.yaml
+*.log
