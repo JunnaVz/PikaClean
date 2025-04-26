@@ -27,7 +27,7 @@ jobs:
         run: go build -o repository
 
       - name: Build cmd
-        run: go build -o cmd
+        run: go build -o teamdev.exe ./cmd
 
       - name: Upload artifacts
         uses: actions/upload-artifact@v4
@@ -36,7 +36,7 @@ jobs:
           path: |
             service
             repository
-            cmd
+            teamdev.exe
 
   test:
     name: Test
@@ -75,6 +75,6 @@ jobs:
           files: |
             service
             repository
-            cmd
+            teamdev.exe
           tag_name: v0.1.${{ github.run_number }}
           generate_release_notes: true
