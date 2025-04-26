@@ -2,9 +2,9 @@ package test_services
 
 import (
 	"github.com/charmbracelet/log"
+	"github.com/golang/mock/gomock"
 	"github.com/google/uuid"
 	"github.com/stretchr/testify/assert"
-	"go.uber.org/mock/gomock"
 	"os"
 	"teamdev/internal/models"
 	"teamdev/internal/repository/repository_errors"

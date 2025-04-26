@@ -3,13 +3,14 @@ package test_services
 import (
 	"fmt"
 	"github.com/charmbracelet/log"
+	"github.com/golang/mock/gomock"
 	"github.com/google/uuid"
 	"github.com/stretchr/testify/assert"
-	"go.uber.org/mock/gomock"
 	"os"
 	"teamdev/internal/models"
 	"teamdev/internal/repository/repository_errors"
 	services "teamdev/internal/services"
+	"teamdev/internal/services/service_errors"
 	"teamdev/internal/services/service_interfaces"
 	mock_password_hash "teamdev/tests/hasher_mocks"
 	mock_repository_interfaces "teamdev/tests/repository_mocks"
@@ -409,7 +410,7 @@ var testWorkerUpdateRole = []struct {
 				Password:    "password123",
 			}, nil)
 
-			fields.hash.EXPECT().GetHash(gomock.Any()).Return("hash", nil)
+			//fields.hash.EXPECT().GetHash(gomock.Any()).Return("hash", nil)
 			fields.workerRepoMock.EXPECT().Update(gomock.Any()).Return(&models.Worker{
 				ID:          uuid.New(),
 				Name:        "Test",
@@ -549,7 +550,7 @@ var testWorkerUpdatePersonalInformation = []struct {
 				Password:    "password123",
 			}, nil)
 
-			fields.hash.EXPECT().GetHash(gomock.Any()).Return("hash", nil)
+			//fields.hash.EXPECT().GetHash(gomock.Any()).Return("hash", nil)
 			fields.workerRepoMock.EXPECT().Update(gomock.Any()).Return(&models.Worker{
 				ID:          uuid.New(),
 				Name:        "Test 2",
@@ -989,12 +990,12 @@ var testWorkerLogin = []struct {
 			password: "password123",
 		},
 		prepare: func(fields *workerServiceFields) {
-			fields.workerRepoMock.EXPECT().GetWorkerByEmail(gomock.Any()).Return(nil, repository_errors.DoesNotExist)
+			fields.workerRepoMock.EXPECT().GetWorkerByEmail(gomock.Any()).Return(nil, service_errors.InvalidEmail)
 		},
 		checkFunc: func(t *testing.T, worker *models.Worker, err error) {
 			assert.Error(t, err)
 			assert.Nil(t, worker)
-			assert.Equal(t, repository_errors.DoesNotExist, err)
+			assert.Equal(t, service_errors.InvalidEmail, err)
 		},
 	},
 	{

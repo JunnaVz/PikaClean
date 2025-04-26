@@ -29,5 +29,5 @@ jobs:
       run: go build -o cmd
 
     - name: Run tests
-      run: go test -v ./tests/hasher_mocks/...
+      run: go test -v ./tests/
     

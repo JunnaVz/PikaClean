@@ -15,7 +15,6 @@ require (
 	github.com/jmoiron/sqlx v1.3.5
 	github.com/stretchr/testify v1.9.0
 	github.com/testcontainers/testcontainers-go v0.29.1
-	go.mongodb.org/mongo-driver v1.15.0
 	go.uber.org/mock v0.4.0
 	golang.org/x/crypto v0.23.0
 	golang.org/x/net v0.25.0
@@ -48,7 +47,6 @@ require (
 	github.com/go-ole/go-ole v1.2.6 // indirect
 	github.com/gogo/protobuf v1.3.2 // indirect
 	github.com/golang/protobuf v1.5.4 // indirect
-	github.com/golang/snappy v0.0.1 // indirect
 	github.com/jackc/chunkreader/v2 v2.0.1 // indirect
 	github.com/jackc/pgconn v1.14.3 // indirect
 	github.com/jackc/pgio v1.0.0 // indirect
@@ -70,7 +68,6 @@ require (
 	github.com/moby/sys/sequential v0.5.0 // indirect
 	github.com/moby/sys/user v0.1.0 // indirect
 	github.com/moby/term v0.5.0 // indirect
-	github.com/montanaflynn/stats v0.0.0-20171201202039-1bf9dbcd8cbe // indirect
 	github.com/morikuni/aec v1.0.0 // indirect
 	github.com/muesli/ansi v0.0.0-20230316100256-276c6243b2f6 // indirect
 	github.com/muesli/cancelreader v0.2.2 // indirect
@@ -86,11 +83,7 @@ require (
 	github.com/sirupsen/logrus v1.9.3 // indirect
 	github.com/tklauser/go-sysconf v0.3.12 // indirect
 	github.com/tklauser/numcpus v0.6.1 // indirect
-	github.com/xdg-go/pbkdf2 v1.0.0 // indirect
-	github.com/xdg-go/scram v1.1.2 // indirect
-	github.com/xdg-go/stringprep v1.0.4 // indirect
 	github.com/xo/terminfo v0.0.0-20220910002029-abceb7e1c41e // indirect
-	github.com/youmark/pkcs8 v0.0.0-20181117223130-1be2e3e5546d // indirect
 	github.com/yusufpapurcu/wmi v1.2.4 // indirect
 	go.opentelemetry.io/contrib/instrumentation/net/http/otelhttp v0.45.0 // indirect
 	go.opentelemetry.io/otel v1.19.0 // indirect

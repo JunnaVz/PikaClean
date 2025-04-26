@@ -12,7 +12,7 @@ package mock_password_hash
 import (
 	reflect "reflect"
 
-	gomock "go.uber.org/mock/gomock"
+	gomock "github.com/golang/mock/gomock"
 )
 
 // MockPasswordHash is a mock of PasswordHash interface.
