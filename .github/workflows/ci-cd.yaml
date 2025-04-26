@@ -56,9 +56,9 @@ jobs:
         with:
           name: Release ${{ github.sha }}
           files: |
-            builds/service
-            builds/repository
-            builds/cmd
+            service
+            repository
+            cmd
           tag_name: v0.1.${{ github.run_number }}
           generate_release_notes: true
         env:
