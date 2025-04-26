@@ -34,7 +34,7 @@ jobs:
         with:
           name: binaries
           path: |
-            teamdev.exe
+            cmd/teamdev.exe
 
   test:
     name: Test
