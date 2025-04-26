@@ -298,6 +298,10 @@ func TestTaskRepositoryGetAllTasks(t *testing.T) {
 	fields := postgres.PostgresConnection{DB: db}
 	taskRepository := postgres.CreateTaskRepository(&fields)
 
+	// Clear tasks table before test
+	_, err := db.Exec("TRUNCATE tasks CASCADE")
+	require.NoError(t, err)
+
 	for _, test := range testTaskRepositoryGetAllTasks {
 		createdTasks := []models.Task{
 			{
@@ -354,6 +358,10 @@ func TestTaskRepositoryGetAllTasksByCategory(t *testing.T) {
 
 	fields := postgres.PostgresConnection{DB: db}
 	taskRepository := postgres.CreateTaskRepository(&fields)
+
+	// Clear tasks table before test
+	_, err := db.Exec("TRUNCATE tasks CASCADE")
+	require.NoError(t, err)
 
 	for _, test := range testTaskRepositoryGetAllTasksByCategory {
 		createdTasks := []models.Task{

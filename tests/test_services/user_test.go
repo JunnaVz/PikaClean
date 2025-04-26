@@ -3,9 +3,9 @@ package test_services
 import (
 	"fmt"
 	"github.com/charmbracelet/log"
+	"github.com/golang/mock/gomock"
 	"github.com/google/uuid"
 	"github.com/stretchr/testify/assert"
-	"go.uber.org/mock/gomock"
 	"os"
 	"teamdev/internal/models"
 	"teamdev/internal/repository/repository_errors"
@@ -251,7 +251,7 @@ var testUserChangePasswordSuccess = []struct {
 			fields.userRepoMock.EXPECT().GetUserByID(gomock.Any()).Return(&models.User{
 				Password: "password123",
 			}, nil)
-			fields.hash.EXPECT().GetHash(gomock.Any()).Return("password123", nil)
+			//fields.hash.EXPECT().GetHash(gomock.Any()).Return("password123", nil)
 			fields.userRepoMock.EXPECT().Update(gomock.Any()).Return(&models.User{}, nil)
 		},
 		checkOutput: func(t *testing.T, user *models.User, err error) {
@@ -295,9 +295,11 @@ var testUserChangePasswordFail = []struct {
 		},
 		prepare: func(fields *userServiceFields) {
 			fields.userRepoMock.EXPECT().GetUserByID(gomock.Any()).Return(nil, repository_errors.DoesNotExist)
+			//fields.hash.EXPECT().GetHash(gomock.Any()).Return("hashed_password", nil)
 		},
 		checkOutput: func(t *testing.T, user *models.User, err error) {
 			assert.Error(t, err)
+			assert.Equal(t, fmt.Errorf("GET operation has failed. Such row does not exist"), err)
 		},
 	},
 	{
@@ -321,6 +323,7 @@ var testUserChangePasswordFail = []struct {
 		},
 		prepare: func(fields *userServiceFields) {
 			fields.userRepoMock.EXPECT().GetUserByID(gomock.Any()).Return(&models.User{}, nil)
+			//fields.hash.EXPECT().GetHash(gomock.Any()).Return("pass", nil)
 		},
 		checkOutput: func(t *testing.T, user *models.User, err error) {
 			assert.Error(t, err)
@@ -439,7 +442,7 @@ var testUserRegisterFail = []struct {
 		prepare: func(fields *userServiceFields) {},
 		checkOutput: func(t *testing.T, user *models.User, err error) {
 			assert.Error(t, err)
-			assert.Equal(t, fmt.Errorf("SERVICE: Invalid input"), err)
+			assert.Equal(t, fmt.Errorf("SERVICE: Invalid email"), err)
 		},
 	},
 	{
@@ -460,7 +463,7 @@ var testUserRegisterFail = []struct {
 		prepare: func(fields *userServiceFields) {},
 		checkOutput: func(t *testing.T, user *models.User, err error) {
 			assert.Error(t, err)
-			assert.Equal(t, fmt.Errorf("SERVICE: Invalid input"), err)
+			assert.Equal(t, fmt.Errorf("SERVICE: Invalid name"), err)
 		},
 	},
 	{
@@ -481,7 +484,7 @@ var testUserRegisterFail = []struct {
 		prepare: func(fields *userServiceFields) {},
 		checkOutput: func(t *testing.T, user *models.User, err error) {
 			assert.Error(t, err)
-			assert.Equal(t, fmt.Errorf("SERVICE: Invalid input"), err)
+			assert.Equal(t, fmt.Errorf("SERVICE: Invalid address"), err)
 		},
 	},
 	{
@@ -502,7 +505,7 @@ var testUserRegisterFail = []struct {
 		prepare: func(fields *userServiceFields) {},
 		checkOutput: func(t *testing.T, user *models.User, err error) {
 			assert.Error(t, err)
-			assert.Equal(t, fmt.Errorf("SERVICE: Invalid input"), err)
+			assert.Equal(t, fmt.Errorf("SERVICE: Invalid phone number"), err)
 		},
 	},
 	{
@@ -523,7 +526,7 @@ var testUserRegisterFail = []struct {
 		prepare: func(fields *userServiceFields) {},
 		checkOutput: func(t *testing.T, user *models.User, err error) {
 			assert.Error(t, err)
-			assert.Equal(t, fmt.Errorf("SERVICE: Invalid input"), err)
+			assert.Equal(t, fmt.Errorf("SERVICE: Invalid password"), err)
 		},
 	},
 }

@@ -3,9 +3,9 @@ package test_services
 import (
 	"fmt"
 	"github.com/charmbracelet/log"
+	"github.com/golang/mock/gomock"
 	"github.com/google/uuid"
 	"github.com/stretchr/testify/assert"
-	"go.uber.org/mock/gomock"
 	"os"
 	"teamdev/internal/models"
 	"teamdev/internal/repository/repository_errors"
@@ -620,17 +620,11 @@ var testOrderServiceChangeOrderStatus = []struct {
 			uuid.New(),
 		},
 		prepare: func(fields *orderServiceFields) {
-			fields.orderRepoMock.EXPECT().GetOrderByID(gomock.Any()).Return(&models.Order{
-				ID:       uuid.New(),
-				Status:   models.CompletedOrderStatus,
-				Rate:     0,
-				WorkerID: uuid.New(),
-			}, nil)
-			fields.workerRepoMock.EXPECT().GetWorkerByID(gomock.Any()).Return(&models.Worker{ID: uuid.New()}, nil)
+			fields.orderRepoMock.EXPECT().GetOrderByID(gomock.Any()).Return(nil, repository_errors.DoesNotExist)
 		},
 		checkOutput: func(t *testing.T, order *models.Order, err error) {
 			assert.Error(t, err)
-			assert.Equal(t, fmt.Errorf("SERVICE: Order is already completed or cancelled"), err)
+			assert.Equal(t, fmt.Errorf("GET operation has failed. Such row does not exist"), err)
 		},
 	},
 	{
