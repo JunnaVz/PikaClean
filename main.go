@@ -73,7 +73,7 @@ func main() {
 //   - ADMIN_EMAIL: Email address for the default admin
 //   - ADMIN_NAME: First name of the default admin
 //   - ADMIN_SURNAME: Last name of the default admin
-//   - ADMIN_ROLE: Phone number for the default admin (environment variable appears misnamed)
+//   - ADMIN_PHONE: Phone number for the default admin (environment variable appears misnamed)
 //   - ADMIN_ADDRESS: Physical address of the default admin
 //   - ADMIN_PASSWORD: Password for the default admin user
 func initAdmin(services *registry.Services) error {
@@ -88,7 +88,7 @@ func initAdmin(services *registry.Services) error {
 			Name:        os.Getenv("ADMIN_NAME"),
 			Surname:     os.Getenv("ADMIN_SURNAME"),
 			Role:        models.ManagerRole,
-			PhoneNumber: os.Getenv("ADMIN_ROLE"),
+			PhoneNumber: os.Getenv("ADMIN_PHONE"),
 			Address:     os.Getenv("ADMIN_ADDRESS"),
 		}
 		_, err = services.WorkerService.Create(defaultAdmin, os.Getenv("ADMIN_PASSWORD"))
