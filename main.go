@@ -21,6 +21,7 @@ import (
 	"teamdev/internal/registry"
 
 	"github.com/charmbracelet/log"
+	"github.com/joho/godotenv"
 )
 
 // main is the entry point for the TeamDev application.
@@ -31,7 +32,12 @@ import (
 func main() {
 	app := registry.App{}
 
-	err := app.Config.ParseConfig()
+	err := godotenv.Load()
+	if err != nil {
+		log.Warn("No .env file found")
+	}
+
+	err = app.Config.ParseConfig()
 	if err != nil {
 		log.Fatal(err)
 	}
