@@ -1,3 +1,6 @@
+// Package postgres provides repository implementations for data persistence
+// using PostgreSQL database. It includes repositories for managing workers,
+// users, tasks, orders, and categories.
 package postgres
 
 import (
@@ -11,24 +14,43 @@ import (
 	"github.com/jmoiron/sqlx"
 )
 
+// UserDB represents a user entity as stored in the PostgreSQL database.
+// It maps directly to the columns in the users table.
 type UserDB struct {
-	ID          uuid.UUID `db:"id"`
-	Name        string    `db:"name"`
-	Surname     string    `db:"surname"`
-	Address     string    `db:"address"`
-	PhoneNumber string    `db:"phone_number"`
-	Email       string    `db:"email"`
-	Password    string    `db:"password"`
+	ID          uuid.UUID `db:"id"`           // Unique identifier for the user
+	Name        string    `db:"name"`         // First name of the user
+	Surname     string    `db:"surname"`      // Last name of the user
+	Address     string    `db:"address"`      // Physical address of the user
+	PhoneNumber string    `db:"phone_number"` // Contact phone number
+	Email       string    `db:"email"`        // Email address, used as username for login
+	Password    string    `db:"password"`     // Hashed password for authentication
 }
 
+// UserRepository implements the IUserRepository interface for PostgreSQL.
+// It provides methods for creating, updating, and retrieving user records.
 type UserRepository struct {
-	db *sqlx.DB
+	db *sqlx.DB // Database connection
 }
 
+// NewUserRepository creates a new UserRepository instance with the provided
+// database connection.
+//
+// Parameters:
+//   - db: An initialized sqlx.DB connection to PostgreSQL
+//
+// Returns:
+//   - repository_interfaces.IUserRepository: Repository implementation
 func NewUserRepository(db *sqlx.DB) repository_interfaces.IUserRepository {
 	return &UserRepository{db: db}
 }
 
+// copyUserResultToModel converts a UserDB database entity to a models.User domain entity.
+//
+// Parameters:
+//   - userDB: Database entity to convert
+//
+// Returns:
+//   - *models.User: Corresponding domain entity
 func copyUserResultToModel(userDB *UserDB) *models.User {
 	return &models.User{
 		ID:          userDB.ID,
@@ -41,6 +63,14 @@ func copyUserResultToModel(userDB *UserDB) *models.User {
 	}
 }
 
+// Create inserts a new user record into the database.
+//
+// Parameters:
+//   - user: User entity to be created
+//
+// Returns:
+//   - *models.User: Created user with assigned ID
+//   - error: repository_errors.InsertError if the operation fails
 func (u UserRepository) Create(user *models.User) (*models.User, error) {
 	query := `INSERT INTO users(name, surname, address, phone_number, email, password) VALUES ($1, $2, $3, $4, $5, $6) RETURNING id;`
 
@@ -62,6 +92,15 @@ func (u UserRepository) Create(user *models.User) (*models.User, error) {
 	}, nil
 }
 
+// Delete removes a user record and all associated orders from the database.
+// This operation is performed as a transaction to maintain data integrity.
+//
+// Parameters:
+//   - id: UUID of the user to delete
+//
+// Returns:
+//   - error: repository_errors.TransactionBeginError, repository_errors.TransactionRollbackError,
+//     repository_errors.DeleteError, or repository_errors.TransactionCommitError if the operation fails
 func (u UserRepository) Delete(id uuid.UUID) error {
 	// Start a new transaction
 	tx, err := u.db.Begin()
@@ -89,20 +128,6 @@ func (u UserRepository) Delete(id uuid.UUID) error {
 		return repository_errors.DeleteError
 	}
 
-	//// Check if the order was actually deleted
-	//rowsAffected, err := result.RowsAffected()
-	//if err != nil {
-	//	err := tx.Rollback()
-	//	if err != nil {
-	//		return repository_errors.TransactionRollbackError
-	//	}
-	//	return repository_errors.DeleteError
-	//}
-	//
-	//if rowsAffected == 0 {
-	//	return errors.New("no order found to delete")
-	//}
-
 	// Commit the transaction
 	err = tx.Commit()
 	if err != nil {
@@ -112,6 +137,14 @@ func (u UserRepository) Delete(id uuid.UUID) error {
 	return nil
 }
 
+// Update modifies an existing user record in the database.
+//
+// Parameters:
+//   - user: User entity with updated values
+//
+// Returns:
+//   - *models.User: Updated user after the operation
+//   - error: repository_errors.UpdateError if the operation fails
 func (u UserRepository) Update(user *models.User) (*models.User, error) {
 	query := `UPDATE users SET name = $1, surname = $2, email = $3, phone_number = $4, address = $5, password = $6 WHERE users.id = $7 RETURNING id, name, surname, address, phone_number, email, password;`
 
@@ -123,6 +156,15 @@ func (u UserRepository) Update(user *models.User) (*models.User, error) {
 	return &updatedUser, nil
 }
 
+// GetUserByID retrieves a user by their unique identifier.
+//
+// Parameters:
+//   - id: UUID of the user to retrieve
+//
+// Returns:
+//   - *models.User: Retrieved user entity
+//   - error: repository_errors.DoesNotExist if no user found,
+//     repository_errors.SelectError for other failures
 func (u UserRepository) GetUserByID(id uuid.UUID) (*models.User, error) {
 	query := `SELECT * FROM users WHERE id = $1;`
 	userDB := &UserDB{}
@@ -139,6 +181,15 @@ func (u UserRepository) GetUserByID(id uuid.UUID) (*models.User, error) {
 	return userModels, nil
 }
 
+// GetUserByEmail retrieves a user by their email address.
+//
+// Parameters:
+//   - email: Email address to search for
+//
+// Returns:
+//   - *models.User: Retrieved user entity
+//   - error: repository_errors.DoesNotExist if no user found,
+//     repository_errors.SelectError for other failures
 func (u UserRepository) GetUserByEmail(email string) (*models.User, error) {
 	query := `SELECT * FROM users WHERE email = $1;`
 	userDB := &UserDB{}
@@ -155,6 +206,12 @@ func (u UserRepository) GetUserByEmail(email string) (*models.User, error) {
 	return userModels, nil
 }
 
+// GetAllUsers retrieves all users from the database.
+// For security reasons, this method does not return user passwords.
+//
+// Returns:
+//   - []models.User: Slice of all user entities
+//   - error: repository_errors.SelectError if the operation fails
 func (u UserRepository) GetAllUsers() ([]models.User, error) {
 	query := `SELECT name, surname, address, phone_number, email FROM users;`
 	var userDB []UserDB

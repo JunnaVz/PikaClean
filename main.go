@@ -1,3 +1,11 @@
+//go install golang.org/x/tools/cmd/godoc@latest
+//godoc -http=:6060
+
+// Package main provides the entry point for the PikaClean application.
+//
+// It initializes the application configuration, sets up service dependencies,
+// ensures a default admin user exists, and runs the application in the
+// configured mode (currently supporting command-line interface).
 package main
 
 import (
@@ -10,6 +18,11 @@ import (
 	"github.com/charmbracelet/log"
 )
 
+// main is the entry point for the TeamDev application.
+// It initializes the application, sets up dependencies,
+// creates a default admin user if one doesn't exist,
+// and runs either in command-line mode or exits with an error
+// if an invalid mode is specified.
 func main() {
 	app := registry.App{}
 
@@ -42,6 +55,22 @@ func main() {
 	}
 }
 
+// initAdmin ensures there is at least one admin user in the system.
+// If no admin users exist, it creates a default admin user using environment variables.
+//
+// Parameters:
+//   - services: Application services registry containing worker service
+//
+// Returns:
+//   - error: If there was an error retrieving workers or creating the admin user
+//
+// Environment Variables Used:
+//   - ADMIN_EMAIL: Email address for the default admin
+//   - ADMIN_NAME: First name of the default admin
+//   - ADMIN_SURNAME: Last name of the default admin
+//   - ADMIN_ROLE: Phone number for the default admin (environment variable appears misnamed)
+//   - ADMIN_ADDRESS: Physical address of the default admin
+//   - ADMIN_PASSWORD: Password for the default admin user
 func initAdmin(services *registry.Services) error {
 	admins, err := services.WorkerService.GetWorkersByRole(models.ManagerRole)
 	if err != nil {

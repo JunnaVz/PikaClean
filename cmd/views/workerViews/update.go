@@ -1,3 +1,6 @@
+// Package workerViews provides user interface functions for the PikaClean application
+// focused on worker-related operations including profile viewing, updating, and management.
+// This file contains functionality for updating worker profile information.
 package workerViews
 
 import (
@@ -9,6 +12,16 @@ import (
 	"teamdev/internal/registry"
 )
 
+// requestForChange prompts the user to input a new value for a specific worker profile field.
+// If the user provides no input (empty string), the original value is maintained.
+//
+// Parameters:
+//   - fieldName: The name of the field being updated (displayed in the prompt)
+//   - fieldValue: The current value of the field
+//   - word: Boolean flag indicating whether to read a single word (true) or multiple words (false)
+//
+// Returns:
+//   - string: The new value if provided, or the original value if input was empty
 func requestForChange(fieldName string, fieldValue string, word bool) string {
 	fmt.Printf("Изменить %s (оставьте пустым, чтобы не менять): ", fieldName)
 
@@ -22,6 +35,17 @@ func requestForChange(fieldName string, fieldValue string, word bool) string {
 	return input
 }
 
+// Update modifies a worker's profile information based on user input.
+// It allows changing various fields including email, password, name, surname,
+// phone number, address, and role (if the editor has manager privileges).
+//
+// Parameters:
+//   - services: Service container providing access to business logic services
+//   - workerID: UUID of the worker whose profile is being updated
+//   - editor: The worker who is performing the update operation
+//
+// Returns:
+//   - error: Any error that occurred during the update operation
 func Update(services registry.Services, workerID uuid.UUID, editor *models.Worker) error {
 	worker, err := services.WorkerService.GetWorkerByID(workerID)
 

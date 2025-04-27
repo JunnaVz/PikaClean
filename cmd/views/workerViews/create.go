@@ -1,3 +1,7 @@
+// Package workerViews provides user interface functions for the PikaClean application
+// focused on worker-related operations like worker registration, profile management,
+// and administrative worker functions. It handles worker interactions through the command line
+// interface for operations performed by managers and administrators.
 package workerViews
 
 import (
@@ -8,6 +12,18 @@ import (
 	"teamdev/internal/registry"
 )
 
+// create handles the worker registration process through the command line interface.
+// It prompts for worker details including personal information and role,
+// then submits the information to create a new worker account in the system.
+// The function supports creation of both manager and master (cleaner) roles.
+//
+// Parameters:
+//   - services: Service container providing access to business logic services,
+//     particularly the WorkerService for worker creation
+//
+// Returns:
+//   - error: Any error that occurred during the worker creation process,
+//     such as validation failures or database errors
 func create(services registry.Services) error {
 	var worker *models.Worker
 	var err error

@@ -1,3 +1,6 @@
+// Package orderViews provides view functions for managing cleaning service orders
+// in the PikaClean application. It contains functions that encapsulate business
+// logic for common order-related operations and UI workflows.
 package orderViews
 
 import (
@@ -6,6 +9,16 @@ import (
 	"teamdev/internal/registry"
 )
 
+// OrderMenuChangeStatus displays a menu for reviewing order tasks and changing the order status.
+// It lists all tasks in the order with their quantities, and provides options for status management.
+//
+// Parameters:
+//   - services: Service container providing access to business logic services
+//   - order: The order to be viewed and potentially modified
+//
+// Returns:
+//   - error: Any error that occurred during task retrieval or status update,
+//     or nil if the operation was successful
 func OrderMenuChangeStatus(services registry.Services, order *models.Order) error {
 	tasks, err := services.OrderService.GetTasksInOrder(order.ID)
 	if err != nil {
@@ -37,6 +50,16 @@ func OrderMenuChangeStatus(services registry.Services, order *models.Order) erro
 	}
 }
 
+// changeStatus handles the actual status change operation after a user selects this option.
+// It displays available status options, validates user input, and updates the order's status.
+//
+// Parameters:
+//   - services: Service container providing access to business logic services
+//   - order: The order whose status should be changed
+//
+// Returns:
+//   - error: Any error that occurred during input processing or status update,
+//     or nil if the operation was successful
 func changeStatus(services registry.Services, order *models.Order) error {
 	fmt.Print("Введите новый статус заказа:\n2 -- в работе\n3 -- выполнен\n0 -- выход\n\n")
 

@@ -1,3 +1,6 @@
+// Package postgres provides repository implementations for data persistence
+// using PostgreSQL database. It includes repositories for managing workers,
+// users, tasks, orders, and categories.
 package postgres
 
 import (
@@ -11,21 +14,40 @@ import (
 	"github.com/jmoiron/sqlx"
 )
 
+// TaskDB represents a task entity as stored in the PostgreSQL database.
+// It maps directly to the columns in the tasks table.
 type TaskDB struct {
-	ID             uuid.UUID `db:"id"`
-	Name           string    `db:"name"`
-	PricePerSingle float64   `db:"price_per_single"`
-	Category       int       `db:"category"`
+	ID             uuid.UUID `db:"id"`               // Unique identifier for the task
+	Name           string    `db:"name"`             // Descriptive name of the cleaning task
+	PricePerSingle float64   `db:"price_per_single"` // Cost per unit of the task
+	Category       int       `db:"category"`         // Category ID the task belongs to
 }
 
+// TaskRepository implements the ITaskRepository interface for PostgreSQL.
+// It provides methods for creating, updating, and retrieving task records.
 type TaskRepository struct {
-	db *sqlx.DB
+	db *sqlx.DB // Database connection
 }
 
+// NewTaskRepository creates a new TaskRepository instance with the provided
+// database connection.
+//
+// Parameters:
+//   - db: An initialized sqlx.DB connection to PostgreSQL
+//
+// Returns:
+//   - repository_interfaces.ITaskRepository: Repository implementation
 func NewTaskRepository(db *sqlx.DB) repository_interfaces.ITaskRepository {
 	return &TaskRepository{db: db}
 }
 
+// copyTaskResultToModel converts a TaskDB database entity to a models.Task domain entity.
+//
+// Parameters:
+//   - taskDB: Database entity to convert
+//
+// Returns:
+//   - *models.Task: Corresponding domain entity
 func copyTaskResultToModel(taskDB *TaskDB) *models.Task {
 	return &models.Task{
 		ID:             taskDB.ID,
@@ -35,6 +57,14 @@ func copyTaskResultToModel(taskDB *TaskDB) *models.Task {
 	}
 }
 
+// Create inserts a new task record into the database.
+//
+// Parameters:
+//   - task: Task entity to be created
+//
+// Returns:
+//   - *models.Task: Created task with assigned ID
+//   - error: repository_errors.InsertError if the operation fails
 func (t TaskRepository) Create(task *models.Task) (*models.Task, error) {
 	query := `INSERT INTO tasks(name, price_per_single, category) VALUES ($1, $2, $3) RETURNING id;`
 
@@ -53,6 +83,14 @@ func (t TaskRepository) Create(task *models.Task) (*models.Task, error) {
 	}, nil
 }
 
+// Delete removes a task record from the database by ID.
+//
+// Parameters:
+//   - id: UUID of the task to delete
+//
+// Returns:
+//   - error: repository_errors.DeleteError if the operation fails,
+//     or a custom error if the task doesn't exist
 func (t TaskRepository) Delete(id uuid.UUID) error {
 	query := `DELETE FROM tasks WHERE id = $1;`
 	result, err := t.db.Exec(query, id)
@@ -73,6 +111,14 @@ func (t TaskRepository) Delete(id uuid.UUID) error {
 	return nil
 }
 
+// Update modifies an existing task record in the database.
+//
+// Parameters:
+//   - task: Task entity with updated values
+//
+// Returns:
+//   - *models.Task: Updated task after the operation
+//   - error: repository_errors.UpdateError if the operation fails
 func (t TaskRepository) Update(task *models.Task) (*models.Task, error) {
 	query := `UPDATE tasks SET name = $1, price_per_single = $2, category = $3 WHERE tasks.id = $4 RETURNING id, name, price_per_single, category;`
 
@@ -84,6 +130,15 @@ func (t TaskRepository) Update(task *models.Task) (*models.Task, error) {
 	return &updatedTask, nil
 }
 
+// GetTaskByID retrieves a task by its unique identifier.
+//
+// Parameters:
+//   - id: UUID of the task to retrieve
+//
+// Returns:
+//   - *models.Task: Retrieved task entity
+//   - error: repository_errors.DoesNotExist if no task found,
+//     repository_errors.SelectError for other failures
 func (t TaskRepository) GetTaskByID(id uuid.UUID) (*models.Task, error) {
 	query := `SELECT * FROM tasks WHERE id = $1;`
 	taskDB := &TaskDB{}
@@ -100,6 +155,15 @@ func (t TaskRepository) GetTaskByID(id uuid.UUID) (*models.Task, error) {
 	return taskModels, nil
 }
 
+// GetTaskByName retrieves a task by its name.
+//
+// Parameters:
+//   - name: Name of the task to search for
+//
+// Returns:
+//   - *models.Task: Retrieved task entity
+//   - error: repository_errors.DoesNotExist if no task found,
+//     repository_errors.SelectError for other failures
 func (t TaskRepository) GetTaskByName(name string) (*models.Task, error) {
 	query := `SELECT * FROM tasks WHERE name = $1 LIMIT 1;`
 	taskDB := &TaskDB{}
@@ -114,6 +178,11 @@ func (t TaskRepository) GetTaskByName(name string) (*models.Task, error) {
 	return copyTaskResultToModel(taskDB), nil
 }
 
+// GetAllTasks retrieves all tasks from the database.
+//
+// Returns:
+//   - []models.Task: Slice of all task entities
+//   - error: repository_errors.SelectError if the operation fails
 func (t TaskRepository) GetAllTasks() ([]models.Task, error) {
 	query := `SELECT id, name, price_per_single, category FROM tasks;`
 	var taskDB []TaskDB
@@ -133,6 +202,14 @@ func (t TaskRepository) GetAllTasks() ([]models.Task, error) {
 	return taskModels, nil
 }
 
+// GetTasksInCategory retrieves all tasks belonging to a specific category.
+//
+// Parameters:
+//   - category: Category ID to filter by
+//
+// Returns:
+//   - []models.Task: Slice of task entities in the specified category
+//   - error: repository_errors.SelectError if the operation fails
 func (t TaskRepository) GetTasksInCategory(category int) ([]models.Task, error) {
 	query := `SELECT * FROM tasks WHERE category = $1;`
 	var taskDB []TaskDB

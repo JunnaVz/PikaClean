@@ -1,3 +1,7 @@
+// Package workerViews provides user interface functions for the PikaClean application
+// focused on worker-related operations like assignment to orders, order management,
+// and worker profile management. It handles worker interactions through the command line
+// interface for operations performed by cleaning staff and administrators.
 package workerViews
 
 import (
@@ -7,6 +11,19 @@ import (
 	"teamdev/internal/registry"
 )
 
+// assignWorker handles the process of assigning a worker to a cleaning order.
+// It retrieves available workers with the Master role, displays them in a table,
+// and prompts the administrator to select a worker to assign to the given order.
+// The function updates the order with the selected worker's ID.
+//
+// Parameters:
+//   - services: Service container providing access to business logic services,
+//     particularly WorkerService and OrderService
+//   - order: Order entity to which a worker will be assigned
+//
+// Returns:
+//   - error: Any error that occurred during the assignment process,
+//     such as database errors or display errors
 func assignWorker(services registry.Services, order *models.Order) error {
 	workers, err := services.WorkerService.GetWorkersByRole(models.MasterRole)
 	if err != nil {
@@ -46,5 +63,4 @@ func assignWorker(services registry.Services, order *models.Order) error {
 			return nil
 		}
 	}
-
 }

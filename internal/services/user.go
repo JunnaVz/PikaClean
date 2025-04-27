@@ -1,3 +1,8 @@
+// Package interfaces provides service layer implementations for the PikaClean application,
+// handling the business logic between API controllers and data repositories.
+// This package contains concrete implementations of the service interfaces defined
+// in the service_interfaces package, with implementations for tasks, orders, users,
+// workers, and categories.
 package interfaces
 
 import (
@@ -12,12 +17,24 @@ import (
 	"teamdev/password_hash"
 )
 
+// UserService implements the IUserService interface and provides
+// business logic for user account management in the application.
+// It handles user registration, authentication, data retrieval and updates.
 type UserService struct {
-	UserRepository repository_interfaces.IUserRepository
-	hash           password_hash.PasswordHash
-	logger         *log.Logger
+	UserRepository repository_interfaces.IUserRepository // Repository for persistent user operations
+	hash           password_hash.PasswordHash            // Utility for password hashing and verification
+	logger         *log.Logger                           // Logger for recording service activity
 }
 
+// NewUserService creates a new UserService instance with the provided dependencies.
+//
+// Parameters:
+//   - UserRepository: Repository for user data access operations
+//   - hash: Password hashing utility for secure password storage
+//   - logger: Logger for recording service activity and errors
+//
+// Returns:
+//   - service_interfaces.IUserService: A fully initialized user service
 func NewUserService(UserRepository repository_interfaces.IUserRepository, hash password_hash.PasswordHash, logger *log.Logger) service_interfaces.IUserService {
 	return &UserService{
 		UserRepository: UserRepository,
@@ -26,6 +43,14 @@ func NewUserService(UserRepository repository_interfaces.IUserRepository, hash p
 	}
 }
 
+// GetUserByID retrieves a specific user by their unique identifier.
+//
+// Parameters:
+//   - id: UUID of the user to retrieve
+//
+// Returns:
+//   - *models.User: Retrieved user entity
+//   - error: Any retrieval errors
 func (u UserService) GetUserByID(id uuid.UUID) (*models.User, error) {
 	user, err := u.UserRepository.GetUserByID(id)
 
@@ -38,6 +63,14 @@ func (u UserService) GetUserByID(id uuid.UUID) (*models.User, error) {
 	return user, nil
 }
 
+// GetUserByEmail retrieves a user by their email address.
+//
+// Parameters:
+//   - email: Email address of the user to retrieve
+//
+// Returns:
+//   - *models.User: Retrieved user entity
+//   - error: Any retrieval errors
 func (u UserService) GetUserByEmail(email string) (*models.User, error) {
 	user, err := u.UserRepository.GetUserByEmail(email)
 
@@ -50,6 +83,14 @@ func (u UserService) GetUserByEmail(email string) (*models.User, error) {
 	return user, nil
 }
 
+// checkIfUserWithEmailExists verifies if a user with the given email already exists.
+//
+// Parameters:
+//   - email: Email address to check
+//
+// Returns:
+//   - *models.User: User entity if found, nil if not found
+//   - error: Any errors encountered during the check
 func (u UserService) checkIfUserWithEmailExists(email string) (*models.User, error) {
 	u.logger.Info("SERVICE: Checking if user with email exists", "email", email)
 	tempUser, err := u.UserRepository.GetUserByEmail(email)
@@ -66,6 +107,15 @@ func (u UserService) checkIfUserWithEmailExists(email string) (*models.User, err
 	}
 }
 
+// Register creates a new user account with validated information and a secure password.
+//
+// Parameters:
+//   - user: User entity with personal information
+//   - password: Plain text password to be hashed and stored
+//
+// Returns:
+//   - *models.User: Created user with assigned ID if successful
+//   - error: Validation or persistence errors if they occur
 func (u UserService) Register(user *models.User, password string) (*models.User, error) {
 	u.logger.Infof("SERVICE: validate user with email %s", user.Email)
 	if !validName(user.Name) {
@@ -128,6 +178,15 @@ func (u UserService) Register(user *models.User, password string) (*models.User,
 	return createdUser, nil
 }
 
+// Login authenticates a user with email and password.
+//
+// Parameters:
+//   - email: User's email address
+//   - password: Plain text password for verification
+//
+// Returns:
+//   - *models.User: Authenticated user entity if successful
+//   - error: Authentication errors if credentials are invalid
 func (u UserService) Login(email, password string) (*models.User, error) {
 	u.logger.Infof("SERVICE: Checking if user with email %s exists", email)
 	tempUser, err := u.checkIfUserWithEmailExists(email)
@@ -150,6 +209,20 @@ func (u UserService) Login(email, password string) (*models.User, error) {
 	return tempUser, nil
 }
 
+// Update modifies an existing user's information with validated data.
+//
+// Parameters:
+//   - id: UUID of the user to update
+//   - name: New first name
+//   - surname: New last name
+//   - email: New email address
+//   - address: New physical address
+//   - phoneNumber: New contact phone number
+//   - password: New password (will be hashed if changed)
+//
+// Returns:
+//   - *models.User: Updated user after changes
+//   - error: Validation or persistence errors if they occur
 func (u UserService) Update(id uuid.UUID, name string, surname string, email string, address string, phoneNumber string, password string) (*models.User, error) {
 	user, err := u.UserRepository.GetUserByID(id)
 	if err != nil {

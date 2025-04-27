@@ -1,3 +1,7 @@
+// Package userViews provides user interface functions for the PikaClean application
+// focused on customer-related operations like order creation, viewing order history,
+// and managing user profiles. It handles user interactions through the command line
+// interface for customer-focused operations.
 package userViews
 
 import (
@@ -9,6 +13,14 @@ import (
 	"time"
 )
 
+// orderSumPrice calculates the total price of an order by summing the cost of all
+// ordered tasks, taking into account their quantities and individual prices.
+//
+// Parameters:
+//   - orderedTasks: Slice of ordered tasks with their quantities
+//
+// Returns:
+//   - float64: Total price of the order in the local currency
 func orderSumPrice(orderedTasks []models.OrderedTask) float64 {
 	var sum float64
 	for _, task := range orderedTasks {
@@ -17,6 +29,17 @@ func orderSumPrice(orderedTasks []models.OrderedTask) float64 {
 	return sum
 }
 
+// addTaskToCart adds a task to the order cart, increasing quantity if the task
+// already exists or appending it as a new item if not. This function ensures
+// that duplicate tasks are consolidated with increased quantities rather than
+// appearing multiple times in the cart.
+//
+// Parameters:
+//   - orderedTask: Task to be added with its quantity
+//   - tasks: Current list of tasks in the cart
+//
+// Returns:
+//   - []models.OrderedTask: Updated list of tasks in the cart
 func addTaskToCart(orderedTask models.OrderedTask, tasks []models.OrderedTask) []models.OrderedTask {
 	for i, task := range tasks {
 		if task.Task.Name == orderedTask.Task.Name {
@@ -28,6 +51,18 @@ func addTaskToCart(orderedTask models.OrderedTask, tasks []models.OrderedTask) [
 	return append(tasks, orderedTask)
 }
 
+// createOrder guides users through the process of creating a new cleaning order.
+// It collects the delivery address, deadline, and allows selection of multiple
+// cleaning tasks with quantities. The function validates input at each step
+// and displays an order summary upon successful creation.
+//
+// Parameters:
+//   - service: Service container providing access to business logic services
+//   - user: Current authenticated user creating the order
+//
+// Returns:
+//   - error: Any error that occurred during order creation,
+//     or nil if the operation was successful
 func createOrder(service registry.Services, user *models.User) error {
 	var yesno string
 	var address string
@@ -66,7 +101,7 @@ func createOrder(service registry.Services, user *models.User) error {
 		var amount int
 
 		fmt.Println("Введите номер услуги и количество через пробел (1 1): ")
-		_, err = fmt.Scanf("%d %d", &taskNum, &amount) // Использование адресов переменных
+		_, err = fmt.Scanf("%d %d", &taskNum, &amount)
 		if err != nil {
 			if err.Error() == "unexpected newline" {
 				if len(orderedTasks) == 0 {

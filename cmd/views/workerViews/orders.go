@@ -1,3 +1,7 @@
+// Package workerViews provides user interface functions for the PikaClean application
+// focused on worker-related operations like order assignment, order management,
+// and administrative worker functions. It handles worker interactions through the command line
+// interface for operations performed by cleaning staff and administrators.
 package workerViews
 
 import (
@@ -8,6 +12,11 @@ import (
 	"teamdev/internal/registry"
 )
 
+// getOrderNumber reads an order number from standard input.
+// It repeatedly prompts until a valid integer is entered.
+//
+// Returns:
+//   - int: The valid order number entered by the user
 func getOrderNumber() int {
 	var orderNumber int
 	for {
@@ -19,11 +28,28 @@ func getOrderNumber() int {
 	}
 }
 
+// validateOrderNumber checks if the entered order number is within
+// the valid range for the available orders.
+//
+// Parameters:
+//   - orderNumber: The order number entered by the user (1-based index)
+//   - orders: Slice of available orders to validate against
+//
+// Returns:
+//   - bool: True if the order number is valid, false otherwise
 func validateOrderNumber(orderNumber int, orders []models.Order) bool {
 	orderNumber--
 	return orderNumber >= 0 && orderNumber < len(orders)
 }
 
+// unassignedOrders displays all unassigned orders and allows
+// a manager to assign workers to them.
+//
+// Parameters:
+//   - services: Service container providing access to business logic services
+//
+// Returns:
+//   - error: Any error that occurred during operation
 func unassignedOrders(services registry.Services) error {
 	params := map[string]string{
 		"worker_id": "null",
@@ -58,6 +84,14 @@ func unassignedOrders(services registry.Services) error {
 	return orderViews.GetUnassignedOrder(services, &orders[orderNumber-1])
 }
 
+// completedOrders displays all completed orders and allows
+// viewing their details.
+//
+// Parameters:
+//   - services: Service container providing access to business logic services
+//
+// Returns:
+//   - error: Any error that occurred during operation
 func completedOrders(services registry.Services) error {
 	params := map[string]string{
 		"status": "3",
@@ -100,6 +134,14 @@ func completedOrders(services registry.Services) error {
 	return nil
 }
 
+// inProgressOrders displays all in-progress orders (status 1 or 2)
+// and allows viewing their details and cancellation.
+//
+// Parameters:
+//   - services: Service container providing access to business logic services
+//
+// Returns:
+//   - error: Any error that occurred during operation
 func inProgressOrders(services registry.Services) error {
 	params := map[string]string{
 		"status": "1,2",
@@ -162,6 +204,15 @@ func inProgressOrders(services registry.Services) error {
 	}
 }
 
+// completedOrdersByWorker displays all completed orders assigned
+// to a specific worker and allows viewing their details.
+//
+// Parameters:
+//   - services: Service container providing access to business logic services
+//   - worker: The worker whose completed orders should be displayed
+//
+// Returns:
+//   - error: Any error that occurred during operation
 func completedOrdersByWorker(services registry.Services, worker *models.Worker) error {
 	params := map[string]string{
 		"status":    "3",
@@ -205,6 +256,15 @@ func completedOrdersByWorker(services registry.Services, worker *models.Worker) 
 	return nil
 }
 
+// inProgressOrdersByWorker displays all in-progress orders assigned
+// to a specific worker and allows changing their status.
+//
+// Parameters:
+//   - services: Service container providing access to business logic services
+//   - worker: The worker whose in-progress orders should be displayed
+//
+// Returns:
+//   - error: Any error that occurred during operation
 func inProgressOrdersByWorker(services registry.Services, worker *models.Worker) error {
 	params := map[string]string{
 		"status":    "1,2",

@@ -1,3 +1,6 @@
+// Package orderViews provides view functions for managing cleaning service orders
+// in the PikaClean application. It contains functions that encapsulate business
+// logic for common order-related operations and UI workflows.
 package orderViews
 
 import (
@@ -7,6 +10,17 @@ import (
 	"teamdev/internal/registry"
 )
 
+// GetUnassignedOrder displays details of an order that hasn't been assigned to a worker yet
+// and provides options for managing it. It shows all tasks in the order and presents
+// a menu for canceling the order or assigning a worker to it.
+//
+// Parameters:
+//   - services: Service container providing access to business logic services
+//   - order: The unassigned order to be viewed and potentially modified
+//
+// Returns:
+//   - error: Any error that occurred during task retrieval or order modification,
+//     or nil if the operation was successful
 func GetUnassignedOrder(services registry.Services, order *models.Order) error {
 	tasks, err := services.OrderService.GetTasksInOrder(order.ID)
 	if err != nil {
@@ -40,6 +54,17 @@ func GetUnassignedOrder(services registry.Services, order *models.Order) error {
 	}
 }
 
+// assignWorker handles the worker assignment process for an unassigned order.
+// It displays available workers with the Master role, allows selecting one by number,
+// and updates the order with the selected worker ID.
+//
+// Parameters:
+//   - services: Service container providing access to business logic services
+//   - order: The order to which a worker should be assigned
+//
+// Returns:
+//   - error: Any error that occurred during worker retrieval or order update,
+//     or nil if the operation was successful
 func assignWorker(services registry.Services, order *models.Order) error {
 	workers, err := services.WorkerService.GetWorkersByRole(models.MasterRole)
 	if err != nil {
@@ -79,5 +104,4 @@ func assignWorker(services registry.Services, order *models.Order) error {
 			return nil
 		}
 	}
-
 }

@@ -1,3 +1,6 @@
+// Package workerViews provides user interface functions for the PikaClean application
+// focused on worker-related operations including task management for managers.
+// This file contains functionality for viewing, editing, and managing cleaning tasks.
 package workerViews
 
 import (
@@ -9,6 +12,15 @@ import (
 	"teamdev/internal/registry"
 )
 
+// pickTaskForEditing displays a list of tasks and allows a manager to select
+// and edit individual tasks. It provides an interactive interface for task modification.
+//
+// Parameters:
+//   - services: Service container providing access to business logic services
+//   - tasks: Slice of tasks to display and make available for editing
+//
+// Returns:
+//   - error: Any error that occurred during operation
 func pickTaskForEditing(services registry.Services, tasks []models.Task) error {
 	var err error
 	var taskID int
@@ -39,6 +51,15 @@ func pickTaskForEditing(services registry.Services, tasks []models.Task) error {
 	}
 }
 
+// managerTasks displays a menu with options for task management operations
+// that are available to managers. It allows viewing all tasks, viewing tasks by category,
+// and creating new tasks.
+//
+// Parameters:
+//   - services: Service container providing access to business logic services
+//
+// Returns:
+//   - error: Any error that occurred during operation
 func managerTasks(services registry.Services) error {
 	var m menu.Menu
 	m.CreateMenu(

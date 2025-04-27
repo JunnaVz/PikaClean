@@ -1,3 +1,6 @@
+// Package workerViews provides user interface functions for the PikaClean application
+// focused on worker-related operations including profile viewing, updating, and management.
+// This file contains functionality for worker menu navigation and interaction.
 package workerViews
 
 import (
@@ -7,6 +10,14 @@ import (
 	"teamdev/internal/registry"
 )
 
+// WorkerLoginMenu displays the login menu for worker authentication.
+// It provides an entry point for workers to authenticate and access the system.
+//
+// Parameters:
+//   - services: Service container providing access to business logic services
+//
+// Returns:
+//   - error: Any error that occurred during the login process
 func WorkerLoginMenu(services registry.Services) error {
 	var m menu.Menu
 	m.CreateMenu(
@@ -39,6 +50,16 @@ func WorkerLoginMenu(services registry.Services) error {
 	return nil
 }
 
+// managerMainMenu displays the main navigation menu for managers.
+// It provides access to manager-specific functionality including worker management,
+// order tracking, and task management.
+//
+// Parameters:
+//   - services: Service container providing access to business logic services
+//   - worker: The authenticated manager worker object
+//
+// Returns:
+//   - error: Any error that occurred during menu navigation
 func managerMainMenu(services registry.Services, worker *models.Worker) error {
 	// Создание меню и добавление элементов
 	var m menu.Menu
@@ -103,6 +124,16 @@ func managerMainMenu(services registry.Services, worker *models.Worker) error {
 	return nil
 }
 
+// workerMainMenu displays the main navigation menu for regular workers (masters).
+// It provides access to worker-specific functionality including profile management
+// and order tracking.
+//
+// Parameters:
+//   - services: Service container providing access to business logic services
+//   - worker: The authenticated worker object
+//
+// Returns:
+//   - error: Any error that occurred during menu navigation
 func workerMainMenu(services registry.Services, worker *models.Worker) error {
 	var m menu.Menu
 	m.CreateMenu(

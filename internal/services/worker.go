@@ -1,3 +1,6 @@
+// Package interfaces provides service implementations for the business logic layer
+// of the PikaClean application. This package contains the core functionality that
+// connects the repository layer with the application's domain models.
 package interfaces
 
 import (
@@ -10,12 +13,24 @@ import (
 	"teamdev/password_hash"
 )
 
+// WorkerService implements the IWorkerService interface to handle worker-related
+// business logic operations. It orchestrates worker data operations and enforces
+// business rules related to worker management.
 type WorkerService struct {
-	WorkerRepository repository_interfaces.IWorkerRepository
-	hash             password_hash.PasswordHash
-	logger           *log.Logger
+	WorkerRepository repository_interfaces.IWorkerRepository // Repository for worker persistence
+	hash             password_hash.PasswordHash              // Password hashing utility
+	logger           *log.Logger                             // Logger for tracking operations
 }
 
+// NewWorkerService creates and initializes a new WorkerService with the provided dependencies.
+//
+// Parameters:
+//   - WorkerRepository: Repository for accessing worker data
+//   - hash: Utility for password hashing and verification
+//   - logger: Logger for operation tracking and error reporting
+//
+// Returns:
+//   - service_interfaces.IWorkerService: Initialized worker service implementation
 func NewWorkerService(WorkerRepository repository_interfaces.IWorkerRepository, hash password_hash.PasswordHash, logger *log.Logger) service_interfaces.IWorkerService {
 	return &WorkerService{
 		WorkerRepository: WorkerRepository,
@@ -24,6 +39,14 @@ func NewWorkerService(WorkerRepository repository_interfaces.IWorkerRepository, 
 	}
 }
 
+// checkIfWorkerWithEmailExists verifies if a worker with the specified email exists in the system.
+//
+// Parameters:
+//   - email: Email address to check for existence
+//
+// Returns:
+//   - *models.Worker: Worker model if found, nil if not found
+//   - error: Error that occurred during repository operation, nil if successful
 func (w WorkerService) checkIfWorkerWithEmailExists(email string) (*models.Worker, error) {
 	w.logger.Info("SERVICE: Checking if worker with email exists", "email", email)
 	tempWorker, err := w.WorkerRepository.GetWorkerByEmail(email)
@@ -40,6 +63,15 @@ func (w WorkerService) checkIfWorkerWithEmailExists(email string) (*models.Worke
 	}
 }
 
+// Login authenticates a worker using email and password credentials.
+//
+// Parameters:
+//   - email: Worker's email address for identification
+//   - password: Worker's password for verification
+//
+// Returns:
+//   - *models.Worker: Authenticated worker if credentials are valid
+//   - error: Authentication error or repository error, nil if successful
 func (w WorkerService) Login(email, password string) (*models.Worker, error) {
 	w.logger.Infof("SERVICE: Checking if worker with email %s exists", email)
 	tempWorker, err := w.checkIfWorkerWithEmailExists(email)
@@ -62,6 +94,15 @@ func (w WorkerService) Login(email, password string) (*models.Worker, error) {
 	return tempWorker, nil
 }
 
+// Create registers a new worker in the system with validation of input data.
+//
+// Parameters:
+//   - worker: Worker model with personal information to be registered
+//   - password: Plain text password to be hashed and stored
+//
+// Returns:
+//   - *models.Worker: Created worker with assigned ID if successful
+//   - error: Validation error or repository error, nil if successful
 func (w WorkerService) Create(worker *models.Worker, password string) (*models.Worker, error) {
 	w.logger.Info("SERVICE: Validating data")
 	if !validName(worker.Name) || !validName(worker.Surname) || !validEmail(worker.Email) || !validAddress(worker.Address) || !validPhoneNumber(worker.PhoneNumber) || !validRole(worker.Role) || !validPassword(password) {
@@ -99,6 +140,13 @@ func (w WorkerService) Create(worker *models.Worker, password string) (*models.W
 	return createdWorker, nil
 }
 
+// Delete removes a worker record from the system by ID.
+//
+// Parameters:
+//   - id: UUID of the worker to be deleted
+//
+// Returns:
+//   - error: Repository error if deletion fails, nil if successful
 func (w WorkerService) Delete(id uuid.UUID) error {
 	_, err := w.WorkerRepository.GetWorkerByID(id)
 	if err != nil {
@@ -115,6 +163,14 @@ func (w WorkerService) Delete(id uuid.UUID) error {
 	return nil
 }
 
+// GetWorkerByID retrieves a worker by their unique identifier.
+//
+// Parameters:
+//   - id: UUID of the worker to retrieve
+//
+// Returns:
+//   - *models.Worker: Retrieved worker if found
+//   - error: Repository error if retrieval fails, nil if successful
 func (w WorkerService) GetWorkerByID(id uuid.UUID) (*models.Worker, error) {
 	worker, err := w.WorkerRepository.GetWorkerByID(id)
 
@@ -127,6 +183,11 @@ func (w WorkerService) GetWorkerByID(id uuid.UUID) (*models.Worker, error) {
 	return worker, nil
 }
 
+// GetAllWorkers retrieves all workers registered in the system.
+//
+// Returns:
+//   - []models.Worker: Slice of all worker records
+//   - error: Repository error if retrieval fails, nil if successful
 func (w WorkerService) GetAllWorkers() ([]models.Worker, error) {
 	workers, err := w.WorkerRepository.GetAllWorkers()
 
@@ -139,6 +200,21 @@ func (w WorkerService) GetAllWorkers() ([]models.Worker, error) {
 	return workers, nil
 }
 
+// Update modifies a worker's information after validating the new data.
+//
+// Parameters:
+//   - id: UUID of the worker to update
+//   - name: New first name
+//   - surname: New last name
+//   - email: New email address
+//   - address: New physical address
+//   - phoneNumber: New contact phone number
+//   - role: New role identifier
+//   - password: New password (will be hashed if different from current)
+//
+// Returns:
+//   - *models.Worker: Updated worker record
+//   - error: Validation error or repository error, nil if successful
 func (w WorkerService) Update(id uuid.UUID, name string, surname string, email string, address string, phoneNumber string, role int, password string) (*models.Worker, error) {
 	worker, err := w.WorkerRepository.GetWorkerByID(id)
 	if err != nil {
@@ -178,6 +254,14 @@ func (w WorkerService) Update(id uuid.UUID, name string, surname string, email s
 	return worker, nil
 }
 
+// GetWorkersByRole retrieves all workers with a specific role.
+//
+// Parameters:
+//   - role: Role identifier to filter by
+//
+// Returns:
+//   - []models.Worker: Slice of workers with the specified role
+//   - error: Repository error if retrieval fails, nil if successful
 func (w WorkerService) GetWorkersByRole(role int) ([]models.Worker, error) {
 	workers, err := w.WorkerRepository.GetWorkersByRole(role)
 
@@ -188,9 +272,16 @@ func (w WorkerService) GetWorkersByRole(role int) ([]models.Worker, error) {
 
 	w.logger.Info("SERVICE: Successfully got workers by role")
 	return workers, nil
-
 }
 
+// GetAverageOrderRate calculates the average rating for a worker based on completed orders.
+//
+// Parameters:
+//   - worker: Worker model to calculate average rating for
+//
+// Returns:
+//   - float64: Average rating value (0.0-5.0)
+//   - error: Repository error if calculation fails, nil if successful
 func (w WorkerService) GetAverageOrderRate(worker *models.Worker) (float64, error) {
 	_, err := w.WorkerRepository.GetWorkerByID(worker.ID)
 	if err != nil {
