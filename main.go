@@ -1,5 +1,10 @@
 //go install golang.org/x/tools/cmd/godoc@latest
 //godoc -http=:6060
+//http://localhost:6060/pkg/teamdev/
+//go doc teamdev/internal/models
+//go doc teamdev/internal/registry
+//go doc teamdev/internal/repository
+//go doc teamdev/internal/services
 
 // Package main provides the entry point for the PikaClean application.
 //
