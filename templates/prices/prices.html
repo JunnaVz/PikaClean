@@ -1,0 +1,24 @@
+<!-- templates/prices/prices.html -->
+{{ define "prices" }}
+{{ template "template_start" . }}
+<h2>{{ .title }}</h2>
+<div class="d-flex flex-wrap">
+    {{ range $category, $tasks := .prices }}
+    <h3>{{ $category }}</h3>
+    <div class="card-container-mod">
+        {{ range $tasks }}
+        <div class="card-mod">
+            <div class="card-side-mod front">
+                <div>{{ .Name }}</div>
+            </div>
+            <div class="card-side-mod back">
+                <div>Цена: {{ .PricePerSingle }}р.</div>
+            </div>
+        </div>
+        {{ end }}
+    </div>
+    {{ end }}
+</div>
+
+{{ template "template_end" . }}
+{{ end }}

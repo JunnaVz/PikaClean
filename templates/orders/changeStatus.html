@@ -1,0 +1,124 @@
+{{ define "changeStatus" }}
+{{ template "template_start" . }}
+
+<div class="row d-flex justify-content-center mt-5">
+    <div class="col-10">
+        <h2>{{ .title }}</h2>
+        {{ if .error }}
+        <div class="alert alert-danger">
+            {{ .error }}
+        </div>
+        {{ else }}
+        <div>
+            <p><b>Адрес заказа:</b> {{ .order.Address }}</p>
+            <p><b>Срок выполнения заказа:</b> {{ .order.Deadline | formatDate }}</p>
+            <div class="card mt-4 mb-4">
+                <div class="card-header">
+                    <b>Информация о заказчике</b>
+                </div>
+                <div class="card-body">
+                    <ul class="list-unstyled">
+                        <li><b>Имя:</b> {{ .user.Name }}</li>
+                        <li><b>Номер телефона:</b> {{ .user.PhoneNumber }}</li>
+                        <li><b>Email:</b> {{ .user.Email }}</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="card mb-4">
+                <div class="card-header">
+                    <b>Заказанные услуги</b>
+                </div>
+                <div class="card-body">
+                    <ul class="list-unstyled">
+                        {{ range .tasks }}
+                        <li>
+                            <b>{{ .Task.Name }}</b> - {{ .Task.PricePerSingle }} руб x {{ .Quantity }}.
+                        </li>
+                        {{ end }}
+                    </ul>
+                </div>
+            </div>
+        </div>
+        {{ if lt .order.Status 3 }}
+        <div class="form-group mb-3">
+            <label for="status">Статус:</label>
+            <select class="form-select" id="status" name="status" required>
+                {{ if eq .order.Status 1 }}
+                <option value="1" {{ if eq .order.Status 1}} selected {{ end }}>Новый заказ</option>
+                {{ end }}
+                {{ if lt .order.Status 3 }}
+                <option value="2" {{ if eq .order.Status 2}} selected {{ end }}>В процессе</option>
+                {{ end }}
+                {{ if lt .order.Status 4 }}
+                <option value="3" {{ if eq .order.Status 3}} selected {{ end }}>Завершен</option>
+                {{ else }}
+                <option value="4" {{ if eq .order.Status 4}} selected {{ end }}>Отменен</option>
+                {{ end }}
+            </select>
+        </div>
+        <button id="changeStatus" class="btn btn-primary">Изменить статус</button>
+        {{ else if eq .order.Status 3}}
+        <div class="info alert alert-success">
+            Заказ завершен
+        </div>
+        {{ else }}
+        <div class="info alert alert-danger">
+            Заказ отменен
+        </div>
+        {{ end }}
+
+        {{ if eq .worker.Role 1 }}
+        <div class="form-group mt-3 mb-3">
+            <label for="worker">Исполнитель:</label>
+            <select class="form-select" id="worker" name="worker" required>
+                <option value="">Выберите исполнителя</option>
+                {{ range .workersSelect }}
+                <option value="{{ .ID }}" {{ if eq .ID $.order.WorkerID }} selected {{ end }}>{{ .Name }}</option>
+                {{ end }}
+            </select>
+        </div>
+        <button id="changeWorker" class="btn btn-primary">Назначить исполнителя</button>
+        {{ end }}
+        {{ end }}
+    </div>
+</div>
+
+<script type="text/javascript">
+    document.getElementById('changeStatus').addEventListener('click', function (event) {
+        event.preventDefault();
+        const status = document.getElementById('status').value;
+        const orderId = {{ .order.ID}};
+        fetch(`/worker/orders/${orderId}/status`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({status: status})
+        }).then(response => {
+            if (response.ok) {
+                window.location.href = `/worker/orders/${orderId}`;
+            }
+        });
+    });
+</script>
+
+<script type="text/javascript">
+    document.getElementById('changeWorker').addEventListener('click', function (event) {
+        event.preventDefault();
+        const workerId = document.getElementById('worker').value;
+        const orderId = {{ .order.ID}};
+        fetch(`/worker/orders/${orderId}/worker`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({workerId: workerId})
+        }).then(response => {
+            if (response.ok) {
+                window.location.href = `/worker/orders/${orderId}`;
+            }
+        });
+    });
+</script>
+{{ template "template_end" }}
+{{ end }}

@@ -1,0 +1,80 @@
+{{ define "workerDetails" }}
+{{ template "template_start" . }}
+<div class="row d-flex justify-content-center mt-5">
+    <div class="col-8">
+        <h2>{{ .title }}</h2>
+        <div class="card mt-4 mb-4">
+            <div class="card-header">
+                {{ .workerDetails.Name }} {{ .workerDetails.Surname }}
+            </div>
+            <div class="card-body">
+                <ul class="list-unstyled">
+                    <li><b>Email:</b> {{ .workerDetails.Email }}</li>
+                    <li><b>Телефон:</b> {{ .workerDetails.PhoneNumber }}</li>
+                    <li><b>Адрес:</b> {{ .workerDetails.Address }}</li>
+                    <li><b>Средняя оценка:</b> {{ .avgRate }}</li>
+                </ul>
+            </div>
+        </div>
+
+        <a href="/worker/{{ .workerDetails.ID }}/edit" class="btn btn-primary">Редактировать профиль</a>
+
+        {{ if eq .workerDetails.Role 2 }}
+        <div class="row mt-4 mb-3">
+            <div class="col">
+                <h5>Заказы в работе</h5>
+
+                {{ if gt (len .inProgressOrders) 0 }}
+                {{ range .inProgressOrders }}
+                <div class="card mt-4">
+                    <div class="card-header">
+                        Заказ от {{ .CreationDate }}
+                    </div>
+                    <div class="card-body">
+                        <ul class="list-unstyled">
+                            <li><b>Дата окончания:</b> {{ .EndDate }}</li>
+                            <li><b>Статус:</b> {{ .Status }}</li>
+                            <li><b>Клиент:</b> {{ .ClientName }}</li>
+                            <li><b>Адрес:</b> {{ .Address }}</li>
+                            <li><b>Телефон:</b> {{ .PhoneNumber }}</li>
+                        </ul>
+                    </div>
+                </div>
+                {{ end }}
+                {{ else }}
+                <p>Нет заказов в работе</p>
+                {{ end }}
+            </div>
+            <div class="col">
+                <h5>История заказов</h5>
+
+                {{ if gt (len .inProgressOrders) 0 }}
+                {{ range .inProgressOrders }}
+                <div class="card mt-4">
+                    <div class="card-header">
+                        Заказ от {{ .CreationDate }}
+                    </div>
+                    <div class="card-body">
+                        <ul class="list-unstyled">
+                            <li><b>Дата окончания:</b> {{ .EndDate }}</li>
+                            <li><b>Статус:</b> {{ .Status }}</li>
+                            <li><b>Клиент:</b> {{ .ClientName }}</li>
+                            <li><b>Адрес:</b> {{ .Address }}</li>
+                            <li><b>Телефон:</b> {{ .PhoneNumber }}</li>
+                            <li><b>Оценка:</b> {{ .Rate }}</li>
+                        </ul>
+                    </div>
+                </div>
+                {{ end }}
+                {{ else }}
+                <p>Нет выполненных заказов</p>
+                {{ end }}
+            </div>
+        </div>
+        {{ end }}
+
+        <a href="/worker/directory" class="btn btn-primary">Назад</a>
+    </div>
+</div>
+{{ template "template_end" . }}
+{{ end }}

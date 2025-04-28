@@ -1,0 +1,225 @@
+{{ define "orderDetails" }}
+{{ template "template_start" . }}
+
+<div class="row d-flex justify-content-center mt-5">
+    <div class="col-10">
+        <h2>{{ .title }}</h2>
+        {{ if .error }}
+        <div class="alert alert-danger">
+            {{ .error }}
+        </div>
+        {{ end }}
+
+        <div class="card mt-4 mb-4">
+            <div
+                    {{ if eq .order.Status 1 }} class="card-header alert-info">
+                {{ else if eq .order.Status 2 }}
+                class="card-header alert-info">
+                {{ else if eq .order.Status 3 }}
+                class="card-header alert-success">
+                {{ else if eq .order.Status 4 }}
+                class="card-header alert-danger">
+                {{ else }}
+                class="card-header">
+                {{ end }}
+                <b>Статус заказа:</b> {{ .order.Status | displayStatus }}
+            </div>
+            <div class="card-body">
+                <ul class="list-unstyled">
+                    <li><b>Дата создания:</b> {{ .order.CreationDate | formatDate }}</li>
+                    <li><b>Срок выполнения:</b> {{ .order.Deadline | formatDate }}</li>
+                    <li><b>Адрес:</b> {{ .order.Address }}</li>
+                    <li><b>Сумма:</b> {{ .totalPrice }}</li>
+                    {{ if eq .order.Status 3 }}
+                    <li><b>Оценка:</b> {{ .order.Rate }}</li>
+                    {{ end }}
+                </ul>
+                <hr/>
+                <ul class="list-unstyled">
+                    {{ range .tasks }}
+                    <li>
+                        <b>{{ .Task.Name }}</b> - {{ .Task.PricePerSingle }} руб x {{ .Quantity }}.
+                    </li>
+                    {{ end }}
+                </ul>
+            </div>
+            <div class="card-footer">
+                {{ if lt .order.Status 3 }}
+                <button id="cancelOrder" class="btn btn-danger">Отменить</button>
+                {{ else if eq .order.Status 3 }}
+                <button id="rateOrder" class="btn btn-primary">Оценить заказ</button>
+                {{ end }}
+
+                {{ if lt .order.Status 3 }}
+                <a href="/users/orders/in-progress" class="btn btn-primary">Вернуться к заказам</a>
+                {{ else }}
+                <a href="/users/orders/completed" class="btn btn-primary">Вернуться к заказам</a>
+                {{ end }}
+            </div>
+        </div>
+    </div>
+</div>
+
+
+{{ if lt .order.Status 3 }}
+<div class="modal fade" id="cancelOrderModal" tabindex="-1" role="dialog" aria-labelledby="cancelOrderModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="cancelOrderModalLabel">Отмена заказа</h5>
+                <button type="button" class="close btn btn-close" data-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                Вы уверены, что хотите отменить этот заказ?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="close btn btn-secondary" data-dismiss="modal">Закрыть</button>
+                <button type="button" class="btn btn-danger" id="confirmCancel">Отменить заказ</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const cancelOrderModal = new bootstrap.Modal(document.getElementById('cancelOrderModal'));
+
+        document.getElementById('cancelOrder').addEventListener('click', function (event) {
+            event.preventDefault();
+            cancelOrderModal.show()
+        });
+
+        document.querySelectorAll('.close').forEach((button) => {
+            button.addEventListener('click', function (event) {
+                event.preventDefault();
+                cancelOrderModal.hide();
+            });
+        });
+
+        document.getElementById('confirmCancel').addEventListener('click', function () {
+                fetch('{{ .order.ID }}/cancel', {
+                    method: 'POST',
+                }).then(
+                    response => {
+                        if (response.ok) {
+                            return response.json();
+                        }
+                        throw new Error('Ошибка при отмене заказа');
+                    }
+                ).then(
+                    data => {
+                        console.log(data);
+                        cancelOrderModal.hide();
+                        window.location.reload();
+                    }
+                ).catch(
+                    error => {
+                        console.error(error);
+                        document.getElementById('confirmCancel').classList.remove('btn-danger');
+                        document.getElementById('confirmCancel').classList.add('btn-primary');
+                        document.getElementById('confirmCancel').innerText = 'Ошибка, попробуйте еще раз';
+                    }
+                )
+            }
+        );
+    });
+</script>
+{{ end }}
+
+{{ if eq .order.Status 3 }}
+<div class="modal fade" id="rateOrderModal" tabindex="-1" role="dialog" aria-labelledby="rateOrderModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="rateOrderModalLabel">Оценка заказа</h5>
+                <button type="button" class="close btn-close" data-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div id="stars" class="d-flex justify-content-center">
+                    <button class="star" data-value="1">&#9733;</button>
+                    <button class="star" data-value="2">&#9733;</button>
+                    <button class="star" data-value="3">&#9733;</button>
+                    <button class="star" data-value="4">&#9733;</button>
+                    <button class="star" data-value="5">&#9733;</button>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary close" data-dismiss="modal">Закрыть</button>
+                <button type="button" class="btn btn-primary" id="confirmRate" disabled>Оценить</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const rateOrderModal = new bootstrap.Modal(document.getElementById('rateOrderModal'));
+        let rating = 0;
+
+        document.getElementById('rateOrder').addEventListener('click', function (event) {
+            event.preventDefault();
+            rateOrderModal.show();
+        });
+
+        document.querySelectorAll('.close').forEach((button) => {
+            button.addEventListener('click', function (event) {
+                event.preventDefault();
+                rateOrderModal.hide();
+            });
+        });
+
+        document.querySelectorAll('.star').forEach((star) => {
+            star.addEventListener('click', function (event) {
+                event.preventDefault();
+                rating = event.target.getAttribute('data-value');
+                document.querySelectorAll('.star').forEach((s) => {
+                    s.style.color = s.getAttribute('data-value') <= rating ? 'gold' : 'gray';
+                });
+                document.getElementById('confirmRate').removeAttribute('disabled');
+            });
+        });
+
+        const confirmRateButton = document.getElementById('confirmRate');
+
+        confirmRateButton.addEventListener('click', function () {
+            console.log('Rating:', rating);
+
+            fetch('{{ .order.ID }}/rate', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({rating: rating}),
+            }).then(
+                response => {
+                    if (response.ok) {
+                        return response.json();
+                    }
+                    throw new Error('Ошибка при оценке заказа');
+                }
+            ).then(
+                data => {
+                    console.log(data);
+                    rateOrderModal.hide();
+                    window.location.reload();
+                }
+            ).catch(
+                error => {
+                    console.error(error);
+                    confirmRateButton.classList.remove('btn-primary');
+                    confirmRateButton.classList.add('btn-danger');
+                    confirmRateButton.innerText = 'Ошибка, попробуйте еще раз';
+                }
+            );
+
+            console.log('Rating:', rating);
+            rateOrderModal.hide();
+        });
+    });
+</script>
+{{ end }}
+
+{{ template "template_end" }}
+{{ end }}

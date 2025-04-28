@@ -1,0 +1,41 @@
+{{ define "masterDashboard" }}
+{{ template "template_start" . }}
+
+<div class="row d-flex justify-content-center mt-5">
+    <div class="col-10">
+        <h2>{{ .title }}</h2>
+
+        <a href="/worker/orders/history" class="btn btn-primary">История заказов</a>
+
+        <div class="row mt-3">
+            <div class="col">
+                <h5>Заказы в работе</h5>
+                {{ if gt (len .ordersInProgress) 0 }}
+                {{ range .ordersInProgress }}
+                <div class="card mt-4">
+                    <div class="card-header">
+                        Заказ от {{ .CreationDate }}
+                    </div>
+                    <div class="card-body">
+                        <ul class="list-unstyled">
+                            <li><b>Дата окончания:</b> {{ .Deadline }}</li>
+                            <li><b>Статус:</b> {{ .Status }}</li>
+                            <li><b>Клиент:</b> {{ .User.Name }} {{ .User.Surname }}</li>
+                            <li><b>Адрес:</b> {{ .Address }}</li>
+                        </ul>
+                    </div>
+                    <div class="card-footer">
+                        <a href="/worker/orders/{{ .ID }}" class="btn btn-primary">Подробнее</a>
+                    </div>
+                </div>
+                {{ end }}
+                {{ else }}
+                <p>Нет заказов в работе</p>
+                {{ end }}
+            </div>
+        </div>
+    </div>
+</div>
+
+{{ template "template_end" }}
+{{ end }}

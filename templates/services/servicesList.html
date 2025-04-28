@@ -1,0 +1,40 @@
+{{ define "servicesList" }}
+{{ template "template_start" . }}
+
+<div class="row d-flex justify-content-center mt-5">
+    <div class="col-10">
+        <h2>{{ .title }}</h2>
+        {{ if .error }}
+        <div class="alert alert-danger">
+            {{ .error }}
+        </div>
+        {{ end }}
+        <div class="mt-4">
+            <a href="/services/create" class="btn btn-primary">Добавить услугу</a>
+            <a href="/categories/create" class="btn btn-primary">Добавить категорию</a>
+        </div>
+        {{ range $category, $tasks := .prices }}
+        <h3 class="mt-4">{{ $category.Name }}</h3>
+        <small><a href="/categories/{{  $category.ID }}">Изменить категорию</a></small>
+        <div class="d-flex flex-wrap gap-3">
+            {{ range $tasks }}
+            <div class="card mt-4 mb-4" style="width: 15rem">
+                <div class="card-header">
+                    <b>{{ .Name }}</b>
+                </div>
+                <div class="card-body">
+                    <p class="card-text">Цена: {{ .PricePerSingle }}р./шт.</p>
+                </div>
+                <div class="card-footer">
+                    <a href="/services/{{ .ID }}" class="btn btn-secondary">Изменить</a>
+                </div>
+            </div>
+            {{ end }}
+        </div>
+        <hr/>
+        {{ end }}
+    </div>
+</div>
+
+{{ template "template_end" }}
+{{ end }}

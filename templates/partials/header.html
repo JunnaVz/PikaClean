@@ -1,0 +1,84 @@
+{{ define "header" }}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+
+    <style>
+        .star {
+            cursor: pointer;
+            border: none;
+            background: none;
+            font-size: 2em;
+            color: gray;
+        }
+
+        .card-container-mod {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            justify-content: space-between;
+            width: 100%;
+        }
+
+        .card-mod {
+            perspective: 150rem;
+            position: relative;
+            height: 20rem;
+            max-width: 320px;
+            margin: 1rem;
+            box-shadow: none;
+            background: none;
+            cursor: pointer;
+            border: none;
+            width: 20%;
+        }
+
+        .card-side-mod {
+            height: 20rem;
+            border-radius: 15px;
+            transition: all 0.8s ease;
+            backface-visibility: hidden;
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 80%;
+            padding:2rem;
+            color: white;
+            display:flex;
+            justify-content:center;
+            align-items:center;
+        }
+
+        .card-side-mod.back {
+            transform: rotateY(-180deg);
+            background-color: #4158D0;
+            background-image:linear-gradient(to right top,#fb6906,#5cf705);
+        }
+
+        .card-side-mod.front {
+            background-color: #0093E9;
+            background-image:linear-gradient(to right top,#FB0712,#124FEB);
+        }
+
+        .card-mod:hover .card-side-mod.front {
+            transform: rotateY(180deg);
+        }
+
+        .card-mod:hover .card-side-mod.back {
+            transform: rotateY(0deg);
+        }
+    </style>
+
+    <title>Клининг | {{.title}}</title>
+</head>
+<body>
+
+{{ end }}
