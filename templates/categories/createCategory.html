@@ -1,0 +1,24 @@
+{{ define "createCategory" }}
+{{ template "template_start" . }}
+
+<div class="row d-flex justify-content-center mt-5">
+    <div class="col-8">
+        <h2>{{ .title }}</h2>
+        {{ if .error }}
+        <div class="alert alert-danger">
+            {{ .error }}
+        </div>
+        {{ end }}
+        <form method="post">
+            <div class="form-group">
+                <label for="name">Название</label>
+                <input type="text" class="form-control" id="name" name="name" aria-describedby="emailHelp"
+                       placeholder="Название" value="{{ .formData.Name }}" required>
+            </div>
+            <button type="submit" class="btn btn-primary mt-3">Создать</button>
+        </form>
+    </div>
+</div>
+
+{{ template "template_end" }}
+{{ end }}

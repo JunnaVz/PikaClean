@@ -1,0 +1,45 @@
+<!-- templates/index.html -->
+{{ define "editProfile" }}
+{{ template "template_start" . }}
+<div class="row d-flex justify-content-center mt-5">
+    <div class="col-8">
+        <h2>Изменить пароль</h2>
+        {{ if .error }}
+        <div class="alert alert-danger">
+            {{ .error }}
+        </div>
+        {{ end }}
+        <form method="post">
+            <div class="form-group">
+                <label for="InputEmail">Email</label>
+                <input type="email" class="form-control" id="InputEmail" name="InputEmail" aria-describedby="emailHelp"
+                       placeholder="Email" value="{{ .formData.Email }}" required>
+                <small id="emailHelp" class="form-text text-muted">Хелп текст</small>
+            </div>
+            <div class="form-group">
+                <label for="InputName">Имя</label>
+                <input type="text" class="form-control" id="InputName" name="InputName" placeholder="Имя"
+                       value="{{ .formData.Name }}" required>
+            </div>
+            <div class="form-group">
+                <label for="InputSurname">Фамилия</label>
+                <input type="text" class="form-control" id="InputSurname" name="InputSurname"
+                       value="{{ .formData.Surname }}" placeholder="Фамилия" required>
+            </div>
+            <div class="form-group">
+                <label for="InputPhone">Телефон</label>
+                <input type="tel" class="form-control" id="InputPhone" name="InputPhone"
+                       value="{{ .formData.PhoneNumber }}" placeholder="Телефон" required>
+            </div>
+            <div class="form-group">
+                <label for="InputAddress">Адрес</label>
+                <input type="text" class="form-control" id="InputAddress" name="InputAddress"
+                       value="{{ .formData.Address }}" placeholder="Адрес" required>
+            </div>
+
+            <button type="submit" class="btn btn-primary mt-2 mb-2">Изменить данные</button>
+        </form>
+    </div>
+</div>
+{{ template "template_end" . }}
+{{ end }}

@@ -1,0 +1,73 @@
+{{ define "workersDirectory" }}
+{{ template "template_start" . }}
+
+<div class="row d-flex justify-content-center mt-5">
+    <div class="col-10">
+        <h2>{{ .title }}</h2>
+
+        <a href="/worker/create" class="btn btn-primary">Добавить работника</a>
+
+        <h3 class="mt-4">Список менеджеров</h3>
+        <table class="table table-striped">
+            <thead>
+            <tr>
+                <th scope="col">Имя</th>
+                <th scope="col">Телефон</th>
+                <th scope="col">Email</th>
+                <th scope="col">Адрес</th>
+                <th scope="col">Подробнее</th>
+            </tr>
+            </thead>
+            <tbody>
+            {{ range .managers }}
+            <tr>
+                <td>{{ .Name }} {{ .Surname }}</td>
+                <td>{{ .PhoneNumber }}</td>
+                <td>{{ .Email }}</td>
+                <td>{{ .Address }}</td>
+                <td>
+                    <a href="/worker/{{ .ID }}" class="btn btn-primary">Подробнее</a>
+                </td>
+            </tr>
+            {{ end }}
+            </tbody>
+        </table>
+
+        <h3 class="mt-4">Список работников</h3>
+        {{ if gt (len .workers) 0 }}
+        <table class="table table-striped">
+            <thead>
+            <tr>
+                <th scope="col">Имя</th>
+                <th scope="col">Телефон</th>
+                <th scope="col">Email</th>
+                <th scope="col">Адрес</th>
+                <th scope="col">Средняя оценка</th>
+                <th scope="col">Подробнее</th>
+            </tr>
+            </thead>
+            <tbody>
+            {{ range .workers }}
+            <tr>
+                <td>{{ .Name }} {{ .Surname }}</td>
+                <td>{{ .PhoneNumber }}</td>
+                <td>{{ .Email }}</td>
+                <td>{{ .Address }}</td>
+                <td>{{ .AverageRate }}</td>
+                <td>
+                    <a href="/worker/{{ .ID }}" class="btn btn-primary">Подробнее</a>
+                </td>
+            </tr>
+            {{ end }}
+            </tbody>
+        </table>
+        {{ else }}
+        <div class="alert alert-info mt-3 mb-3">
+            Нет работников
+        </div>
+        {{ end }}
+        <a class="btn btn-primary" href="/worker/">Назад</a>
+    </div>
+</div>
+{{ template "template_end" }}
+{{ end }}

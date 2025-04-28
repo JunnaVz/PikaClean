@@ -1,0 +1,43 @@
+{{ define "ordersList" }}
+{{ template "template_start" . }}
+
+<div class="row d-flex justify-content-center mt-5">
+    <div class="col-10">
+        <h2>{{ .title }}</h2>
+        {{ if gt (len .orders) 0 }}
+        <table class="table table-striped">
+            <thead>
+            <tr>
+                <th scope="col">Дата создания</th>
+                <th scope="col">Срок выполнения</th>
+                <th scope="col">Статус</th>
+                <th scope="col">Адрес</th>
+                <th scope="col">Сумма</th>
+                <th scope="col">Действия</th>
+            </tr>
+            </thead>
+            <tbody>
+            {{ range .orders }}
+            <tr>
+                <td>{{ .CreationDate | formatDate }}</td>
+                <td>{{ .Deadline | formatDate }}</td>
+                <td>{{ .Status }}</td>
+                <td>{{ .Address }}</td>
+                <td>{{ .TotalPrice }} руб.</td>
+                <td>
+                    <a href="/users/orders/{{ .ID }}" class="btn btn-primary">Подробнее</a>
+                </td>
+            </tr>
+            {{ end }}
+            </tbody>
+        </table>
+        {{ else }}
+        <div class="alert alert-info">
+            У вас пока нет заказов
+        </div>
+        {{ end }}
+        <a class="btn btn-primary" href="/users/profile">Назад</a>
+    </div>
+</div>
+{{ template "template_end" }}
+{{ end }}

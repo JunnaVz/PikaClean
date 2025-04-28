@@ -1,0 +1,40 @@
+{{ define "confirmOrder" }}
+{{ template "template_start" . }}
+
+<div class="row d-flex justify-content-center mt-5">
+    <div class="col-10">
+        <h2>{{ .title }}</h2>
+        {{ if .error }}
+        <div class="alert alert-danger">
+            {{ .error }}
+        </div>
+        {{ end }}
+        <div>
+            <h3>Информация о заказе</h3>
+            <p><b>Адрес заказа:</b> {{ .address }}</p>
+            <p><b>Срок выполнения заказа:</b> {{ .deadline }}</p>
+            <h3>Заказанные услуги</h3>
+
+            <ul>
+                {{ range .tasks }}
+                <li>{{ .Task.Name }} - {{ .Task.PricePerSingle }}р. x {{ .Quantity }} шт.</li>
+                {{ end }}
+            </ul>
+
+            <h5>Итого: {{ .totalPrice }} рублей</h5>
+        </div>
+
+        <form method="post">
+            <input type="hidden" id="addressInput" name="addressInput" value="{{ .address }}">
+            <input type="hidden" id="deadlineInput" name="deadlineInput" value="{{ .deadline }}">
+            {{ range .tasks }}
+            <input id="{{ .Task.ID }}" name="tasks[{{ .Task.ID }}]" value="{{ .Quantity }}" type="hidden">
+            {{ end }}
+            <input type="hidden" id="confirmed" name="confirmed" value="true">
+            <button class="btn btn-primary mt-4">Подтвердить заказ</button>
+        </form>
+    </div>
+</div>
+
+{{ template "template_end" }}
+{{ end }}

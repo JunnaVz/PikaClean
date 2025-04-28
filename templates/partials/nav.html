@@ -1,0 +1,41 @@
+{{ define "nav" }}
+
+<nav class="navbar navbar-light bg-light">
+    <a class="navbar-brand" href="/">
+        <img src="https://th.bing.com/th/id/OIP.zWg7S2YYcgA41-a2qxpSYQHaHa?pid=ImgDet&w=172.3404255319149&h=180&c=7&dpr=2"
+             width="50" height="50" class="d-inline-block align-middle" alt="">
+        My cleaning company
+    </a>
+    <ul class="nav justify-content-end">
+        <li class="nav-item">
+            <a class="nav-link active" aria-current="page" href="/prices">Услуги</a>
+        </li>
+        {{ if .auth }}
+        <li class="nav-item">
+            <a class="nav-link" href="/users/profile">Профиль</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="/auth/logout">Выйти</a>
+        </li>
+        {{ else if .worker }}
+        <li class="nav-item">
+            <a class="nav-link" href="/worker">Панель управления</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="/worker/profile">Профиль</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="/auth/logout">Выйти</a>
+        </li>
+        {{ else }}
+        <li class="nav-item">
+            <a class="nav-link" href="/auth/signin">Войти</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="/auth/signup">Зарегистрироваться</a>
+        </li>
+        {{ end }}
+    </ul>
+</nav>
+
+{{ end }}

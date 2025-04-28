@@ -19,6 +19,7 @@ import (
 	"teamdev/cmd"
 	"teamdev/internal/models"
 	"teamdev/internal/registry"
+	"teamdev/server"
 
 	"github.com/charmbracelet/log"
 	"github.com/joho/godotenv"
@@ -59,6 +60,13 @@ func main() {
 		cmdErr := cmd.RunMenu(app.Services)
 		if cmdErr != nil {
 			log.Fatal(cmdErr)
+			return
+		}
+	} else if app.Config.Mode == "server" {
+		log.Info("Start with server!")
+		err = server.RunServer(&app)
+		if err != nil {
+			log.Fatal(err)
 			return
 		}
 	} else {

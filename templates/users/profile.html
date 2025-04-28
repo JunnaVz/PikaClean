@@ -1,0 +1,34 @@
+<!-- templates/index.html -->
+{{ define "profile" }}
+{{ template "template_start" . }}
+<div class="row d-flex justify-content-center mt-5">
+    <div class="col-8">
+        <h2>{{ .title }}</h2>
+        <div class="card mt-4 mb-4">
+            <div class="card-header">
+                Ваши данные
+            </div>
+            <div class="card-body">
+                <ul class="list-unstyled">
+                    <li><b>Email:</b> {{ .auth.Email }}</li>
+                    <li><b>Имя:</b> {{ .auth.Name }}</li>
+                    <li><b>Фамилия:</b> {{ .auth.Surname }}</li>
+                    <li><b>Телефон:</b> {{ .auth.PhoneNumber }}</li>
+                    <li><b>Адрес:</b> {{ .auth.Address }}</li>
+                </ul>
+            </div>
+        </div>
+
+        <a href="/users/edit-profile" class="btn btn-primary">Редактировать профиль</a>
+
+        <a href="/users/change-password" class="btn btn-primary">Изменить пароль</a>
+
+        <hr>
+
+        <a href="/users/orders/create" class="btn btn-primary">Новый заказ</a>
+        <a href="/users/orders/in-progress" class="btn btn-primary">Заказы в работе</a>
+        <a href="/users/orders/completed" class="btn btn-primary">История заказов</a>
+    </div>
+</div>
+{{ template "template_end" . }}
+{{ end }}

@@ -1,0 +1,54 @@
+<!-- templates/index.html -->
+{{ define "editWorker" }}
+{{ template "template_start" . }}
+<div class="row d-flex justify-content-center mt-5">
+  <div class="col-8">
+    <h2>Изменить данные</h2>
+    {{ if .error }}
+    <div class="alert alert-danger">
+      {{ .error }}
+    </div>
+    {{ end }}
+    <form method="post">
+      <div class="form-group">
+        <label for="email">Email</label>
+        <input type="email" class="form-control" id="email" name="email" aria-describedby="emailHelp"
+               placeholder="Email" value="{{ .formData.Email }}" required>
+      </div>
+      <div class="form-group">
+        <label for="name">Имя</label>
+        <input type="text" class="form-control" id="name" name="name" placeholder="Имя"
+               value="{{ .formData.Name }}" required>
+      </div>
+      <div class="form-group">
+        <label for="surname">Фамилия</label>
+        <input type="text" class="form-control" id="surname" name="surname"
+               value="{{ .formData.Surname }}" placeholder="Фамилия" required>
+      </div>
+      <div class="form-group">
+        <label for="phone_number">Телефон</label>
+        <input type="tel" class="form-control" id="phone_number" name="phone_number"
+               value="{{ .formData.PhoneNumber }}" placeholder="Телефон" required>
+      </div>
+      <div class="form-group">
+        <label for="address">Адрес</label>
+        <input type="text" class="form-control" id="address" name="address"
+               value="{{ .formData.Address }}" placeholder="Адрес" required>
+      </div>
+
+      {{ if eq .worker.Role 1 }}
+      <div class="form-group">
+        <label for="role">Роль</label>
+        <select class="form-select" id="role" name="role" required>
+          <option value="1" {{ if eq .formData.Role 1 }} selected {{ end }}>Менеджер</option>
+          <option value="2" {{ if eq .formData.Role 2 }} selected {{ end }}>Работник</option>
+        </select>
+      </div>
+      {{ end }}
+
+      <button type="submit" class="btn btn-primary mt-2 mb-2">Изменить данные</button>
+    </form>
+  </div>
+</div>
+{{ template "template_end" . }}
+{{ end }}

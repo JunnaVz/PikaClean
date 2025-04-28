@@ -51,5 +51,9 @@ func getAllWorkers(services registry.Services, manager *models.Worker) error {
 		}
 
 		err = Update(services, workers[action-1].ID, manager)
+
+		if err != nil {
+			return err
+		}
 	}
 }

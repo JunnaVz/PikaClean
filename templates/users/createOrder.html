@@ -1,0 +1,97 @@
+{{ define "createOrder" }}
+{{ template "template_start" . }}
+
+<div class="row d-flex justify-content-center mt-5">
+    <div class="col-10">
+        <h2>{{ .title }}</h2>
+        {{ if .error }}
+        <div class="alert alert-danger">
+            {{ .error }}
+        </div>
+        {{ end }}
+        <form method="post">
+            <div class="form-group mt-3 mb-3">
+                <label class="form-check-label" for="sameAddress">Адрес заказа совпадает с моим: </label>
+                <input type="checkbox" class="form-check-inline" id="sameAddress" name="sameAddress">
+            </div>
+            <div class="form-group mb-3">
+                <label for="addressInput">Адрес заказа:</label>
+                <input type="text" class="form-control" id="addressInput" name="addressInput"
+                       placeholder="Адрес" value="{{ .formData.Address }}">
+            </div>
+            <div class="form-group mb-3">
+                <label for="deadlineInput">Срок выполнения заказа:</label>
+                <input type="date" class="form-control" id="deadlineInput" name="deadlineInput"
+                       value="{{ .formData.Deadline }}" required>
+            </div>
+
+            <h2>Выберите услуги, которые хотите заказать</h2>
+            {{ range $category, $tasks := .prices }}
+            <details>
+                <summary><b>{{ $category.Name }}</b></summary>
+                <ul>
+                    {{ range $tasks }}
+                    <li class="d-flex justify-content-between align-items-center mb-2">
+                        <label for="{{ .ID }}" style="width: 70%">
+                            <b>{{ .Name }}</b> - <wbr>
+                            <span id="{{ .ID }}-price" style="white-space: nowrap;">{{ .PricePerSingle }}</span>р./шт.
+                        </label>
+                        <input id="{{ .ID }}" name="tasks[{{ .ID }}]" type="number" step="1" class="form-control price-input" style="width: 10%" min="0" value="0" placeholder="Количество" required>
+                    </li>
+                    {{ end }}
+                </ul>
+            </details>
+            {{ end }}
+
+            <div class="mt-3">
+                <b>Итого:</b> <span id="totalPrice">0</span> рублей.
+            </div>
+            <button type="submit" class="btn btn-primary mt-4">Далее</button>
+        </form>
+    </div>
+</div>
+
+<script type="text/javascript">
+    document.getElementById('sameAddress').addEventListener('change', function () {
+        if (this.checked) {
+            document.getElementById('addressInput').setAttribute('disabled', 'disabled');
+        } else {
+            document.getElementById('addressInput').removeAttribute('disabled');
+        }
+    });
+</script>
+
+<script type="application/javascript">
+    const total = document.getElementById('totalPrice');
+    const inputs = Array.from(document.getElementsByClassName('price-input'));
+
+    inputs.forEach(input => {
+        input.addEventListener('input', function () {
+            let sum = 0;
+            inputs.forEach(input => {
+                const id = input.id;
+                const price = document.getElementById(`${id}-price`).innerText;
+                const quantity = parseFloat(input.value);
+                if (quantity === Math.floor(quantity)){
+                    sum += price * quantity;
+                }
+            });
+            total.innerText = sum;
+        });
+    });
+</script>
+
+<script type="application/javascript">
+    document.addEventListener('DOMContentLoaded', () => {
+        const today = new Date();
+        const dd = String(today.getDate()).padStart(2, '0');
+        const mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+        const yyyy = today.getFullYear();
+
+        const todayStr = yyyy + '-' + mm + '-' + dd;
+        document.getElementById('deadlineInput').setAttribute('min', todayStr);
+    });
+</script>
+
+{{ template "template_end" }}
+{{ end }}

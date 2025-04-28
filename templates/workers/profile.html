@@ -1,0 +1,42 @@
+{{ define "worker-profile" }}
+{{ template "template_start" . }}
+<div class="row d-flex justify-content-center mt-5">
+    <div class="col-8">
+        <h2>{{ .title }}</h2>
+        <div class="card mt-4 mb-4">
+            <div class="card-header">
+                Ваши данные
+            </div>
+            <div class="card-body">
+                <ul class="list-unstyled">
+                    <li><b>Email:</b> {{ .worker.Email }}</li>
+                    <li><b>Имя:</b> {{ .worker.Name }}</li>
+                    <li><b>Фамилия:</b> {{ .worker.Surname }}</li>
+                    <li><b>Телефон:</b> {{ .worker.PhoneNumber }}</li>
+                    <li><b>Адрес:</b> {{ .worker.Address }}</li>
+                </ul>
+            </div>
+        </div>
+
+        {{ if eq .worker.Role 2 }}
+        {{ if lt .avgRate 2.0 }}
+        <div class="alert alert-danger">
+            Ваша средняя оценка: {{ .avgRate }}
+        </div>
+        {{ else if lt .avgRate 4.0 }}
+        <div class="alert alert-warning">
+            Ваша средняя оценка: {{ .avgRate }}
+        </div>
+        {{ else }}
+        <div class="alert alert-success">
+            Ваша средняя оценка: {{ .avgRate }}
+        </div>
+        {{ end }}
+        {{ end }}
+
+        <a href="/worker/{{ .worker.ID }}/edit" class="btn btn-primary">Редактировать профиль</a>
+        <a href="/worker/change-password" class="btn btn-primary">Изменить пароль</a>
+    </div>
+</div>
+{{ template "template_end" . }}
+{{ end }}
