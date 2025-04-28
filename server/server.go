@@ -1,13 +1,14 @@
 package server
 
 import (
+	"github.com/gin-contrib/sessions/cookie"
 	"html/template"
 	"teamdev/internal/registry"
 	"teamdev/middleware"
 	"teamdev/utils"
 
-	//"github.com/gin-contrib/sessions"
-	"github.com/gin-gonic/contrib/sessions"
+	"github.com/gin-contrib/sessions"
+	//"github.com/gin-gonic/contrib/sessions"
 	"github.com/gin-gonic/gin"
 )
 
@@ -24,9 +25,11 @@ func RunServer(app *registry.App) error {
 
 	gin.SetMode(gin.DebugMode)
 
-	port := app.Config.Port
-	address := app.Config.Address
-	err := router.Run(address + port)
+	//port := app.Config.Port
+	//address := app.Config.Address
+	//port := os.Getenv("PORT")
+	//address := os.Getenv("ADDRESS")
+	err := router.Run("127.0.0.1" + ":" + "8080")
 	return err
 }
 
@@ -40,8 +43,10 @@ func (s *Services) setupRouter(app *registry.App) *gin.Engine {
 		"displayStatus": utils.DisplayStatus,
 	})
 
-	store := sessions.NewCookieStore([]byte("secret"))
+	store := cookie.NewStore([]byte("secret"))
 	router.Use(sessions.Sessions("mysession", store))
+	//store := sessions.NewCookieStore([]byte("secret"))
+	//router.Use(sessions.Sessions("mysession", store))
 
 	router.LoadHTMLGlob("templates/**/*")
 
