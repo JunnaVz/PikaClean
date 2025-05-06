@@ -48,9 +48,21 @@ func NewTaskService(TaskRepository repository_interfaces.ITaskRepository, logger
 //   - *models.Task: Created task with assigned ID if successful
 //   - error: Validation or persistence errors if they occur
 func (t TaskService) Create(name string, price float64, category int) (*models.Task, error) {
-	if !validName(name) || !validPrice(price) || !validCategory(category) {
-		t.logger.Error("SERVICE: Invalid input")
-		return nil, fmt.Errorf("SERVICE: Invalid input")
+	//if !validName(name) || !validPrice(price) || !validCategory(category) {
+	//	t.logger.Error("SERVICE: Invalid input")
+	//	return nil, fmt.Errorf("SERVICE: Invalid input")
+	//}
+	if !validName(name) {
+		t.logger.Error("SERVICE: Invalid name")
+		return nil, fmt.Errorf("SERVICE: Invalid name")
+	}
+	if !validPrice(price) {
+		t.logger.Error("SERVICE: Invalid price")
+		return nil, fmt.Errorf("SERVICE: Invalid price")
+	}
+	if !validCategory(category) {
+		t.logger.Error("SERVICE: Invalid category")
+		return nil, fmt.Errorf("SERVICE: Invalid category")
 	}
 
 	task := &models.Task{
@@ -87,14 +99,27 @@ func (t TaskService) Update(taskID uuid.UUID, category int, name string, price f
 		return nil, err
 	}
 
-	if !validCategory(category) || !validName(name) || !validPrice(price) {
-		t.logger.Error("SERVICE: Invalid input")
-		return nil, fmt.Errorf("SERVICE: Invalid input")
-	} else {
-		task.Category = category
-		task.Name = name
-		task.PricePerSingle = price
+	//if !validCategory(category) || !validName(name) || !validPrice(price) {
+	//	t.logger.Error("SERVICE: Invalid input")
+	//	return nil, fmt.Errorf("SERVICE: Invalid input")
+	//} else {
+
+	if !validCategory(category) {
+		t.logger.Error("SERVICE: Invalid category")
+		return nil, fmt.Errorf("SERVICE: Invalid category")
 	}
+	if !validName(name) {
+		t.logger.Error("SERVICE: Invalid name")
+		return nil, fmt.Errorf("SERVICE: Invalid name")
+	}
+	if !validPrice(price) {
+		t.logger.Error("SERVICE: Invalid price")
+		return nil, fmt.Errorf("SERVICE: Invalid price")
+	}
+
+	task.Category = category
+	task.Name = name
+	task.PricePerSingle = price
 
 	updatedTask, err := t.TaskRepository.Update(task)
 	if err != nil {

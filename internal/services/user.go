@@ -230,9 +230,39 @@ func (u UserService) Update(id uuid.UUID, name string, surname string, email str
 		return nil, err
 	}
 
-	if !validName(name) || !validName(surname) || !validEmail(email) || !validAddress(address) || !validPhoneNumber(phoneNumber) || !validPassword(password) {
-		u.logger.Error("SERVICE: Invalid input")
-		return nil, fmt.Errorf("SERVICE: Invalid input")
+	//if !validName(name) || !validName(surname) || !validEmail(email) || !validAddress(address) || !validPhoneNumber(phoneNumber) || !validPassword(password) {
+	//	u.logger.Error("SERVICE: Invalid input")
+	//	return nil, fmt.Errorf("SERVICE: Invalid input")
+	//}
+
+	if !validName(user.Name) {
+		u.logger.Error("SERVICE: Invalid name")
+		return nil, fmt.Errorf("SERVICE: Invalid name")
+	}
+
+	if !validName(user.Surname) {
+		u.logger.Error("SERVICE: Invalid surname")
+		return nil, fmt.Errorf("SERVICE: Invalid surname")
+	}
+
+	if !validEmail(user.Email) {
+		u.logger.Error("SERVICE: Invalid email")
+		return nil, fmt.Errorf("SERVICE: Invalid email")
+	}
+
+	if !validAddress(user.Address) {
+		u.logger.Error("SERVICE: Invalid address")
+		return nil, fmt.Errorf("SERVICE: Invalid address")
+	}
+
+	if !validPhoneNumber(user.PhoneNumber) {
+		u.logger.Error("SERVICE: Invalid phone number")
+		return nil, fmt.Errorf("SERVICE: Invalid phone number")
+	}
+
+	if !validPassword(password) {
+		u.logger.Error("SERVICE: Invalid password")
+		return nil, fmt.Errorf("SERVICE: Invalid password")
 	}
 
 	user.Name = name

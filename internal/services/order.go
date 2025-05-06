@@ -100,9 +100,22 @@ func (o OrderService) checkTasksExistence(tasks []models.OrderedTask) (bool, err
 //   - error: Any validation or persistence errors
 func (o OrderService) CreateOrder(userID uuid.UUID, address string, deadline time.Time, orderedTasks []models.OrderedTask) (*models.Order, error) {
 	// checking if order is valid
-	if !validAddress(address) || !validDeadline(deadline) || !validTasksNumber(orderedTasks) {
-		o.logger.Error("SERVICE: Invalid input")
-		return nil, fmt.Errorf("SERVICE: Invalid input")
+	//if !validAddress(address) || !validDeadline(deadline) || !validTasksNumber(orderedTasks) {
+	//	o.logger.Error("SERVICE: Invalid input")
+	//	return nil, fmt.Errorf("SERVICE: Invalid input")
+	//}
+
+	if !validAddress(address) {
+		o.logger.Error("SERVICE: Invalid address")
+		return nil, fmt.Errorf("SERVICE: Invalid address")
+	}
+	if !validDeadline(deadline) {
+		o.logger.Error("SERVICE: Invalid deadline")
+		return nil, fmt.Errorf("SERVICE: Invalid deadline")
+	}
+	if !validTasksNumber(orderedTasks) {
+		o.logger.Error("SERVICE: Invalid tasks number")
+		return nil, fmt.Errorf("SERVICE: Invalid tasks number")
 	}
 
 	if _, err := o.checkTasksExistence(orderedTasks); err != nil {

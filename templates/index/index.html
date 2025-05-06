@@ -1,26 +1,125 @@
-<!-- templates/index.html -->
+<!-- templates/index/index.html -->
 {{ define "index" }}
 {{ template "template_start" . }}
-<div class="row d-flex justify-content-center mt-5">
-    <div class="col-8">
-        <h2>Лэндосик</h2>
-        <div>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce nec sapien at odio vulputate
-            semper quis id metus.
-            Etiam sollicitudin augue vel lorem consequat, sit amet fringilla leo luctus. Vivamus
-            facilisis, sapien in cursus
-            bibendum, odio nibh gravida ante, et fermentum dui urna sit amet lacus. Integer laoreet
-            molestie ullamcorper. Sed
-            ultrices eget dolor at hendrerit. Vivamus feugiat mollis posuere. Sed nec sollicitudin orci,
-            a fermentum quam.
-            Vivamus consectetur ligula quis dapibus auctor. Donec a nisl at turpis accumsan mollis
-            aliquam non neque. In et arcu
-            neque. Donec sit amet finibus nunc. In ut mi iaculis, dapibus sapien vel, tincidunt orci.
-            Vestibulum finibus arcu eu
-            lacinia accumsan. Sed gravida posuere lectus, non molestie sapien viverra non. Nunc vehicula
-            tincidunt tincidunt.
-            Aliquam id finibus est, in dapibus eros.
+
+<!-- Hero Section -->
+<div class="container-fluid bg-primary text-white py-5">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-6">
+                <h1 class="display-4 fw-bold">Качественный клининг для вашего дома</h1>
+                <p class="lead my-4">Профессиональные услуги уборки с гарантией качества. Наши специалисты позаботятся о чистоте вашего пространства.</p>
+                <a href="/prices" class="btn btn-light btn-lg px-4">Посмотреть услуги</a>
+            </div>
+            <div class="col-lg-6 d-none d-lg-block">
+                <img src="/static/images/pic1.jpg" alt="Cleaning Services" class="img-fluid rounded shadow">
+            </div>
         </div>
     </div>
 </div>
+
+<!-- Features Section -->
+<div class="container py-5">
+    <h2 class="text-center mb-5">Почему выбирают нас</h2>
+    <div class="row g-4">
+        <div class="col-md-4">
+            <div class="card h-100 border-0 shadow-sm">
+                <div class="card-body text-center">
+                    <div class="mb-3">
+                        <i class="fas fa-clock fa-3x text-primary"></i>
+                    </div>
+                    <h5 class="card-title">Быстрый сервис</h5>
+                    <p class="card-text">Выполняем работы точно в срок, экономя ваше время и нервы</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card h-100 border-0 shadow-sm">
+                <div class="card-body text-center">
+                    <div class="mb-3">
+                        <i class="fas fa-award fa-3x text-primary"></i>
+                    </div>
+                    <h5 class="card-title">Гарантия качества</h5>
+                    <p class="card-text">Используем только профессиональное оборудование и экологичные средства</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card h-100 border-0 shadow-sm">
+                <div class="card-body text-center">
+                    <div class="mb-3">
+                        <i class="fas fa-smile fa-3x text-primary"></i>
+                    </div>
+                    <h5 class="card-title">Довольные клиенты</h5>
+                    <p class="card-text">Более 95% наших клиентов рекомендуют нас своим друзьям и знакомым</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Popular Services -->
+<div class="container-fluid bg-light py-5">
+    <div class="container">
+        <h2 class="text-center mb-5">Популярные услуги</h2>
+        <div class="row g-4">
+            <div class="col-md-4">
+                <div class="card h-100">
+                    <img src="/static/images/pic4.jpg" class="card-img-top" alt="Regular Cleaning">
+                    <div class="card-body">
+                        <h5 class="card-title">Поддерживающая уборка</h5>
+                        <p class="card-text">Комплексная уборка жилых помещений на регулярной основе</p>
+                    </div>
+                    <div class="card-footer bg-white border-0">
+                        <a href="/prices" class="btn btn-outline-primary">Подробнее</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card h-100">
+                    <img src="/static/images/pic3.jpg" class="card-img-top" alt="Deep Cleaning">
+                    <div class="card-body">
+                        <h5 class="card-title">Генеральная уборка</h5>
+                        <p class="card-text">Тщательная очистка всех поверхностей, включая труднодоступные места</p>
+                    </div>
+                    <div class="card-footer bg-white border-0">
+                        <a href="/prices" class="btn btn-outline-primary">Подробнее</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card h-100">
+                    <img src="/static/images/pic2.jpg" class="card-img-top" alt="Window Cleaning">
+                    <div class="card-body">
+                        <h5 class="card-title">Мытье окон</h5>
+                        <p class="card-text">Профессиональная очистка окон, балконов и витражей</p>
+                    </div>
+                    <div class="card-footer bg-white border-0">
+                        <a href="/prices" class="btn btn-outline-primary">Подробнее</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- CTA Section -->
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-8 text-center">
+            <h2>Готовы заказать услугу?</h2>
+            <p class="lead mb-4">Создайте заказ прямо сейчас или свяжитесь с нами для получения дополнительной информации</p>
+            <div class="d-grid gap-2 d-md-block">
+                {{ if .auth }}
+                <a href="/users/orders/create" class="btn btn-primary btn-lg px-4 me-md-2">Создать заказ</a>
+                {{ else }}
+                <a href="/auth/signin" class="btn btn-primary btn-lg px-4 me-md-2">Войти</a>
+                <a href="/auth/signup" class="btn btn-outline-secondary btn-lg px-4">Зарегистрироваться</a>
+                {{ end }}
+            </div>
+        </div>
+    </div>
+</div>
+
 {{ template "template_end" . }}
 {{ end }}

@@ -105,9 +105,44 @@ func (w WorkerService) Login(email, password string) (*models.Worker, error) {
 //   - error: Validation error or repository error, nil if successful
 func (w WorkerService) Create(worker *models.Worker, password string) (*models.Worker, error) {
 	w.logger.Info("SERVICE: Validating data")
-	if !validName(worker.Name) || !validName(worker.Surname) || !validEmail(worker.Email) || !validAddress(worker.Address) || !validPhoneNumber(worker.PhoneNumber) || !validRole(worker.Role) || !validPassword(password) {
-		w.logger.Error("SERVICE: Invalid input")
-		return nil, fmt.Errorf("SERVICE: Invalid input")
+	//if !validName(worker.Name) || !validName(worker.Surname) || !validEmail(worker.Email) || !validAddress(worker.Address) || !validPhoneNumber(worker.PhoneNumber) || !validRole(worker.Role) || !validPassword(password) {
+	//	w.logger.Error("SERVICE: Invalid input")
+	//	return nil, fmt.Errorf("SERVICE: Invalid input")
+	//}
+
+	if !validName(worker.Name) {
+		w.logger.Error("SERVICE: Invalid name")
+		return nil, fmt.Errorf("SERVICE: Invalid name")
+	}
+
+	if !validName(worker.Surname) {
+		w.logger.Error("SERVICE: Invalid surname")
+		return nil, fmt.Errorf("SERVICE: Invalid surname")
+	}
+
+	if !validEmail(worker.Email) {
+		w.logger.Error("SERVICE: Invalid email")
+		return nil, fmt.Errorf("SERVICE: Invalid email")
+	}
+
+	if !validAddress(worker.Address) {
+		w.logger.Error("SERVICE: Invalid address")
+		return nil, fmt.Errorf("SERVICE: Invalid address")
+	}
+
+	if !validPhoneNumber(worker.PhoneNumber) {
+		w.logger.Error("SERVICE: Invalid phone number")
+		return nil, fmt.Errorf("SERVICE: Invalid phone number")
+	}
+
+	if !validRole(worker.Role) {
+		w.logger.Error("SERVICE: Invalid role")
+		return nil, fmt.Errorf("SERVICE: Invalid role")
+	}
+
+	if !validPassword(password) {
+		w.logger.Error("SERVICE: Invalid password")
+		return nil, fmt.Errorf("SERVICE: Invalid password")
 	}
 
 	w.logger.Infof("SERVICE: Checking if worker with email %s exists", worker.Email)
@@ -222,25 +257,58 @@ func (w WorkerService) Update(id uuid.UUID, name string, surname string, email s
 		return nil, err
 	}
 
-	if !validName(name) || !validName(surname) || !validEmail(email) || !validAddress(address) || !validPhoneNumber(phoneNumber) || !validRole(role) || !validPassword(password) {
-		w.logger.Error("SERVICE: Invalid input")
-		return nil, fmt.Errorf("SERVICE: Invalid input")
-	} else {
-		worker.Name = name
-		worker.Surname = surname
-		worker.Email = email
-		worker.Address = address
-		worker.PhoneNumber = phoneNumber
-		worker.Role = role
+	//if !validName(name) || !validName(surname) || !validEmail(email) || !validAddress(address) || !validPhoneNumber(phoneNumber) || !validRole(role) || !validPassword(password) {
+	//	w.logger.Error("SERVICE: Invalid input")
+	//	return nil, fmt.Errorf("SERVICE: Invalid input")
+	if !validName(worker.Name) {
+		w.logger.Error("SERVICE: Invalid name")
+		return nil, fmt.Errorf("SERVICE: Invalid name")
+	}
 
-		if password != worker.Password {
-			hashedPassword, hashErr := w.hash.GetHash(password)
-			if hashErr != nil {
-				w.logger.Error("SERVICE: Error occurred during password hashing")
-				return nil, hashErr
-			} else {
-				worker.Password = hashedPassword
-			}
+	if !validName(worker.Surname) {
+		w.logger.Error("SERVICE: Invalid surname")
+		return nil, fmt.Errorf("SERVICE: Invalid surname")
+	}
+
+	if !validEmail(worker.Email) {
+		w.logger.Error("SERVICE: Invalid email")
+		return nil, fmt.Errorf("SERVICE: Invalid email")
+	}
+
+	if !validAddress(worker.Address) {
+		w.logger.Error("SERVICE: Invalid address")
+		return nil, fmt.Errorf("SERVICE: Invalid address")
+	}
+
+	if !validPhoneNumber(worker.PhoneNumber) {
+		w.logger.Error("SERVICE: Invalid phone number")
+		return nil, fmt.Errorf("SERVICE: Invalid phone number")
+	}
+
+	if !validRole(worker.Role) {
+		w.logger.Error("SERVICE: Invalid role")
+		return nil, fmt.Errorf("SERVICE: Invalid role")
+	}
+
+	if !validPassword(password) {
+		w.logger.Error("SERVICE: Invalid password")
+		return nil, fmt.Errorf("SERVICE: Invalid password")
+	}
+
+	worker.Name = name
+	worker.Surname = surname
+	worker.Email = email
+	worker.Address = address
+	worker.PhoneNumber = phoneNumber
+	worker.Role = role
+
+	if password != worker.Password {
+		hashedPassword, hashErr := w.hash.GetHash(password)
+		if hashErr != nil {
+			w.logger.Error("SERVICE: Error occurred during password hashing")
+			return nil, hashErr
+		} else {
+			worker.Password = hashedPassword
 		}
 	}
 

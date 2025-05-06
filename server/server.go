@@ -132,5 +132,6 @@ func (s *Services) setupRouter(app *registry.App) *gin.Engine {
 		categoriesGroup.POST("/:id", s.editCategoryPost)
 	}
 
+	router.Static("/static", "./static")
 	return router
 }
