@@ -260,32 +260,32 @@ func (w WorkerService) Update(id uuid.UUID, name string, surname string, email s
 	//if !validName(name) || !validName(surname) || !validEmail(email) || !validAddress(address) || !validPhoneNumber(phoneNumber) || !validRole(role) || !validPassword(password) {
 	//	w.logger.Error("SERVICE: Invalid input")
 	//	return nil, fmt.Errorf("SERVICE: Invalid input")
-	if !validName(worker.Name) {
+	if !validName(name) {
 		w.logger.Error("SERVICE: Invalid name")
 		return nil, fmt.Errorf("SERVICE: Invalid name")
 	}
 
-	if !validName(worker.Surname) {
+	if !validName(surname) {
 		w.logger.Error("SERVICE: Invalid surname")
 		return nil, fmt.Errorf("SERVICE: Invalid surname")
 	}
 
-	if !validEmail(worker.Email) {
+	if !validEmail(email) {
 		w.logger.Error("SERVICE: Invalid email")
 		return nil, fmt.Errorf("SERVICE: Invalid email")
 	}
 
-	if !validAddress(worker.Address) {
+	if !validAddress(address) {
 		w.logger.Error("SERVICE: Invalid address")
 		return nil, fmt.Errorf("SERVICE: Invalid address")
 	}
 
-	if !validPhoneNumber(worker.PhoneNumber) {
+	if !validPhoneNumber(phoneNumber) {
 		w.logger.Error("SERVICE: Invalid phone number")
 		return nil, fmt.Errorf("SERVICE: Invalid phone number")
 	}
 
-	if !validRole(worker.Role) {
+	if !validRole(role) {
 		w.logger.Error("SERVICE: Invalid role")
 		return nil, fmt.Errorf("SERVICE: Invalid role")
 	}

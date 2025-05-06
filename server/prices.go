@@ -18,8 +18,8 @@ func (s *Services) priceList(c *gin.Context) {
 	}
 
 	prices := make(map[string][]models.Task)
-	for i, category := range categories {
-		tasks, err := s.Services.TaskService.GetTasksInCategory(i)
+	for _, category := range categories {
+		tasks, err := s.Services.TaskService.GetTasksInCategory(category.ID)
 		if err != nil {
 			log.Printf("Error getting tasks in category %s: %v", category.Name, err)
 			continue

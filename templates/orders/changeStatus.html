@@ -115,7 +115,7 @@
             body: JSON.stringify({workerId: workerId})
         }).then(response => {
             if (response.ok) {
-                window.location.href = `/worker/orders/${orderId}`;
+                window.location.href = `/worker/`;
             }
         });
     });

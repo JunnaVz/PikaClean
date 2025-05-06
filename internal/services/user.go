@@ -235,27 +235,27 @@ func (u UserService) Update(id uuid.UUID, name string, surname string, email str
 	//	return nil, fmt.Errorf("SERVICE: Invalid input")
 	//}
 
-	if !validName(user.Name) {
+	if !validName(name) {
 		u.logger.Error("SERVICE: Invalid name")
 		return nil, fmt.Errorf("SERVICE: Invalid name")
 	}
 
-	if !validName(user.Surname) {
+	if !validName(surname) {
 		u.logger.Error("SERVICE: Invalid surname")
 		return nil, fmt.Errorf("SERVICE: Invalid surname")
 	}
 
-	if !validEmail(user.Email) {
+	if !validEmail(email) {
 		u.logger.Error("SERVICE: Invalid email")
 		return nil, fmt.Errorf("SERVICE: Invalid email")
 	}
 
-	if !validAddress(user.Address) {
+	if !validAddress(address) {
 		u.logger.Error("SERVICE: Invalid address")
 		return nil, fmt.Errorf("SERVICE: Invalid address")
 	}
 
-	if !validPhoneNumber(user.PhoneNumber) {
+	if !validPhoneNumber(phoneNumber) {
 		u.logger.Error("SERVICE: Invalid phone number")
 		return nil, fmt.Errorf("SERVICE: Invalid phone number")
 	}
