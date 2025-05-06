@@ -327,7 +327,7 @@ var testUserChangePasswordFail = []struct {
 		},
 		checkOutput: func(t *testing.T, user *models.User, err error) {
 			assert.Error(t, err)
-			assert.Equal(t, fmt.Errorf("SERVICE: Invalid input"), err)
+			assert.Equal(t, fmt.Errorf("SERVICE: Invalid password"), err)
 		},
 	},
 }
@@ -679,7 +679,7 @@ var testUserUpdatePersonalInformationFail = []struct {
 		checkOutput: func(t *testing.T, user *models.User, err error) {
 			assert.Error(t, err)
 			assert.Nil(t, user)
-			assert.Equal(t, fmt.Errorf("SERVICE: Invalid input"), err)
+			assert.Equal(t, fmt.Errorf("SERVICE: Invalid name"), err)
 		},
 	},
 	{
@@ -707,7 +707,7 @@ var testUserUpdatePersonalInformationFail = []struct {
 		checkOutput: func(t *testing.T, user *models.User, err error) {
 			assert.Error(t, err)
 			assert.Nil(t, user)
-			assert.Equal(t, fmt.Errorf("SERVICE: Invalid input"), err)
+			assert.Equal(t, fmt.Errorf("SERVICE: Invalid surname"), err)
 		},
 	},
 	{
@@ -735,7 +735,7 @@ var testUserUpdatePersonalInformationFail = []struct {
 		checkOutput: func(t *testing.T, user *models.User, err error) {
 			assert.Error(t, err)
 			assert.Nil(t, user)
-			assert.Equal(t, fmt.Errorf("SERVICE: Invalid input"), err)
+			assert.Equal(t, fmt.Errorf("SERVICE: Invalid email"), err)
 		},
 	},
 	{
@@ -763,7 +763,7 @@ var testUserUpdatePersonalInformationFail = []struct {
 		checkOutput: func(t *testing.T, user *models.User, err error) {
 			assert.Error(t, err)
 			assert.Nil(t, user)
-			assert.Equal(t, fmt.Errorf("SERVICE: Invalid input"), err)
+			assert.Equal(t, fmt.Errorf("SERVICE: Invalid address"), err)
 		},
 	},
 	{
@@ -791,7 +791,7 @@ var testUserUpdatePersonalInformationFail = []struct {
 		checkOutput: func(t *testing.T, user *models.User, err error) {
 			assert.Error(t, err)
 			assert.Nil(t, user)
-			assert.Equal(t, fmt.Errorf("SERVICE: Invalid input"), err)
+			assert.Equal(t, fmt.Errorf("SERVICE: Invalid phone number"), err)
 		},
 	},
 	{

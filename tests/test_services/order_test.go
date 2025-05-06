@@ -101,7 +101,7 @@ var testOrderServiceCreate = []struct {
 		checkOutput: func(t *testing.T, order *models.Order, err error) {
 			assert.Error(t, err)
 			assert.Nil(t, order)
-			assert.Equal(t, fmt.Errorf("SERVICE: Invalid input"), err)
+			assert.Equal(t, fmt.Errorf("SERVICE: Invalid tasks number"), err)
 		},
 	},
 	{
@@ -121,7 +121,7 @@ var testOrderServiceCreate = []struct {
 		checkOutput: func(t *testing.T, order *models.Order, err error) {
 			assert.Error(t, err)
 			assert.Nil(t, order)
-			assert.Equal(t, fmt.Errorf("SERVICE: Invalid input"), err)
+			assert.Equal(t, fmt.Errorf("SERVICE: Invalid address"), err)
 		},
 	},
 	{
@@ -141,7 +141,7 @@ var testOrderServiceCreate = []struct {
 		checkOutput: func(t *testing.T, order *models.Order, err error) {
 			assert.Error(t, err)
 			assert.Nil(t, order)
-			assert.Equal(t, fmt.Errorf("SERVICE: Invalid input"), err)
+			assert.Equal(t, fmt.Errorf("SERVICE: Invalid deadline"), err)
 		},
 	},
 	{

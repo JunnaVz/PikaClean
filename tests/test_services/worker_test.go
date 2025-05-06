@@ -341,7 +341,7 @@ var testWorkerChangePassword = []struct {
 		},
 		checkFunc: func(t *testing.T, worker *models.Worker, err error) {
 			assert.Error(t, err)
-			assert.Equal(t, fmt.Errorf("SERVICE: Invalid input"), err)
+			assert.Equal(t, fmt.Errorf("SERVICE: Invalid password"), err)
 		},
 	},
 }
@@ -481,7 +481,7 @@ var testWorkerUpdateRole = []struct {
 		},
 		checkFunc: func(t *testing.T, worker *models.Worker, err error) {
 			assert.Error(t, err)
-			assert.Equal(t, fmt.Errorf("SERVICE: Invalid input"), err)
+			assert.Equal(t, fmt.Errorf("SERVICE: Invalid role"), err)
 		},
 	},
 }
@@ -626,7 +626,7 @@ var testWorkerUpdatePersonalInformation = []struct {
 		checkFunc: func(t *testing.T, worker *models.Worker, err error) {
 			assert.Error(t, err)
 			assert.Nil(t, worker)
-			assert.Equal(t, fmt.Errorf("SERVICE: Invalid input"), err)
+			assert.Equal(t, fmt.Errorf("SERVICE: Invalid name"), err)
 		},
 	},
 	{
@@ -656,7 +656,7 @@ var testWorkerUpdatePersonalInformation = []struct {
 		checkFunc: func(t *testing.T, worker *models.Worker, err error) {
 			assert.Error(t, err)
 			assert.Nil(t, worker)
-			assert.Equal(t, fmt.Errorf("SERVICE: Invalid input"), err)
+			assert.Equal(t, fmt.Errorf("SERVICE: Invalid email"), err)
 		},
 	},
 	{
@@ -686,7 +686,7 @@ var testWorkerUpdatePersonalInformation = []struct {
 		checkFunc: func(t *testing.T, worker *models.Worker, err error) {
 			assert.Error(t, err)
 			assert.Nil(t, worker)
-			assert.Equal(t, fmt.Errorf("SERVICE: Invalid input"), err)
+			assert.Equal(t, fmt.Errorf("SERVICE: Invalid address"), err)
 
 		},
 	},
@@ -717,7 +717,7 @@ var testWorkerUpdatePersonalInformation = []struct {
 		checkFunc: func(t *testing.T, worker *models.Worker, err error) {
 			assert.Error(t, err)
 			assert.Nil(t, worker)
-			assert.Equal(t, fmt.Errorf("SERVICE: Invalid input"), err)
+			assert.Equal(t, fmt.Errorf("SERVICE: Invalid phone number"), err)
 		},
 	},
 }
@@ -829,7 +829,7 @@ var testWorkerCreate = []struct {
 		checkFunc: func(t *testing.T, worker *models.Worker, err error) {
 			assert.Error(t, err)
 			assert.Nil(t, worker)
-			assert.Equal(t, fmt.Errorf("SERVICE: Invalid input"), err)
+			assert.Equal(t, fmt.Errorf("SERVICE: Invalid name"), err)
 		},
 	},
 	{
@@ -852,7 +852,7 @@ var testWorkerCreate = []struct {
 		checkFunc: func(t *testing.T, worker *models.Worker, err error) {
 			assert.Error(t, err)
 			assert.Nil(t, worker)
-			assert.Equal(t, fmt.Errorf("SERVICE: Invalid input"), err)
+			assert.Equal(t, fmt.Errorf("SERVICE: Invalid email"), err)
 		},
 	},
 	{
@@ -875,7 +875,7 @@ var testWorkerCreate = []struct {
 		checkFunc: func(t *testing.T, worker *models.Worker, err error) {
 			assert.Error(t, err)
 			assert.Nil(t, worker)
-			assert.Equal(t, fmt.Errorf("SERVICE: Invalid input"), err)
+			assert.Equal(t, fmt.Errorf("SERVICE: Invalid address"), err)
 		},
 	},
 	{
@@ -899,7 +899,7 @@ var testWorkerCreate = []struct {
 		checkFunc: func(t *testing.T, worker *models.Worker, err error) {
 			assert.Error(t, err)
 			assert.Nil(t, worker)
-			assert.Equal(t, fmt.Errorf("SERVICE: Invalid input"), err)
+			assert.Equal(t, fmt.Errorf("SERVICE: Invalid phone number"), err)
 		},
 	},
 
@@ -923,7 +923,7 @@ var testWorkerCreate = []struct {
 		checkFunc: func(t *testing.T, worker *models.Worker, err error) {
 			assert.Error(t, err)
 			assert.Nil(t, worker)
-			assert.Equal(t, fmt.Errorf("SERVICE: Invalid input"), err)
+			assert.Equal(t, fmt.Errorf("SERVICE: Invalid password"), err)
 		},
 	},
 }
